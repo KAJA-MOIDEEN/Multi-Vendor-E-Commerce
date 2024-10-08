@@ -1,5 +1,3 @@
-const { models } = require("mongoose");
-
 class ErrorHandler extends Error {
   constructor(message, statusCode) {
     super(message);

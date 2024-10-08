@@ -1,15 +1,12 @@
 const express = require("express"); 
 const ErrorHandler = require("./utils/ErrorHandler");
 const app = express(); 
-const cookieParser = require("cookie-parser")
-const bodyParser = require("body-parser")
-const fileupload = require("express-fileupload")
-
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(fileupload({useTempFiles:true}));
+app.use(bodyParser.urlencoded({extended:true,limit:"50mb"}));
 
 
 // config 
