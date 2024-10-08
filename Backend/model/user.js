@@ -1,72 +1,89 @@
 const mongoose = require("mongoose");
-const {v4} = require("uuid");
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
-    _id: {
-        type:String,
-        default: v4()
-    },
-    name:{
-        type:String,
-
-    },
-    email:{
-        type:String,
-
-   },
-   password:{
-    type:String,
-   },
-   address:[
+  name:{
+    type: String,
+    required: [true, "Please enter your name!"],
+  },
+  email:{
+    type: String,
+    required: [true, "Please enter your email!"],
+  },
+  password:{
+    type: String,
+    required: [true, "Please enter your password"],
+    minLength: [4, "Password should be greater than 4 characters"],
+    select: false,
+  },
+  phoneNumber:{
+    type: Number,
+  },
+  addresses:[
     {
-        country:{
-            type:String,
-        },
-        city:{
-            type:String,
-        },
-        address1:{
-            type:String,
-        },
-        address2:{
-            type:String,
-        },
-        zipcode:{
-            type:Number,
-        },
-        addressType:{
-            type:String,
-        },
+      country: {
+        type: String,
+      },
+      city:{
+        type: String,
+      },
+      address1:{
+        type: String,
+      },
+      address2:{
+        type: String,
+      },
+      zipCode:{
+        type: Number,
+      },
+      addressType:{
+        type: String,
+      },
     }
-
-   ],
-   phoneNumber:{
-    type:Number,
-   },
-   role:{
-    type:String,
-    default:"user",
-   },
-   avatar:{
-    public_id:{
-        type:String,
-        required: true,
+  ],
+  role:{
+    type: String,
+    default: "user",
+  },
+  avatar:{
+    public_id: {
+      type: String,
+      required: true,
     },
-    url:{
-        type:String,
-        required: true,
+    url: {
+      type: String,
+      required: true,
     },
+ },
+ createdAt:{
+  type: Date,
+  default: Date.now(),
+ },
+ resetPasswordToken: String,
+ resetPasswordTime: Date,
+});
 
-   },
-   resetPasswordToken:String,
-   resetPasswordTime:Date,
 
+//  Hash password
+userSchema.pre("save", async function (next){
+  if(!this.isModified("password")){
+    next();
+  }
 
-},
-{timestamps:true}
-);
+  this.password = await bcrypt.hash(this.password, 10);
+});
 
-const userLogin = mongoose.Model("User", userSchema);
+// jwt token
+userSchema.methods.getJwtToken = function () {
+  return jwt.sign({ id: this._id}, process.env.JWT_SECRET_KEY,{
+    expiresIn: process.env.JWT_EXPIRES,
+  });
+};
 
-Module.exports =  userLogin;
+// compare password
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+module.exports = mongoose.model("User", userSchema);
