@@ -1,37 +1,22 @@
-const app = require("./app");
-const connectionDB = require("./db/Database");
+import express from "express";
+import cors from "cors";
+import "dotenv/config";
+import connectDB from "./config/mongodb.js";
 
-const port = process.env.PORT;  // Add fallback port
+// app config
+const app = express();
 
-// Handling Uncaught Exception
-process.on("uncaughtException", (err) => {
-    console.error(`Error: ${err.message}`);
-    console.error("Shutting down the server due to an uncaught exception");
-    process.exit(1);
+const port = process.env.PORT || 4000 
+ 
+// middelwares
+app.use(express.json());
+app.use(cors());
+
+//api endpoints
+app.get('/',(req,res)=>{
+    res.send('<h1>API WORKING</h1>')
 });
 
-// Config
-if (process.env.NODE_ENV !== 'production') {
-    require("dotenv").config({
-        path: "config/.env"
-    });
-}
-//connect DB
-connectionDB();
 
-// Log the port to check if it’s properly loaded
-console.log(`Port from env: ${process.env.PORT}`);
-
-// Create server
-const server = app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
-// Handling Unhandled Promise Rejection
-process.on("unhandledRejection", (err) => {
-    console.error(`Error: ${err.message}`);
-    console.error("Shutting down the server due to an unhandled promise rejection");
-    server.close(() => {
-        process.exit(1);
-    });
-});
+app.listen(port,()=>console.log(`Server Successfully Started on http://localhost:${port}`));
+connectDB()
