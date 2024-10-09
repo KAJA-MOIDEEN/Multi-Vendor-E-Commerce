@@ -2,8 +2,8 @@ import React, { useState } from "react";
 // import axios from "axios";
 // import { toast } from "react-toastify";
 
-import avartar from "../assets/image.png"
-import logo from"../assets/image copy.png";
+import styling_image from "../assets/frontend_assets/loginSignup_image.png";
+import logo_preview from "../assets/frontend_assets/logo_preview.png"
 
 const Login = () => {
 
@@ -30,7 +30,7 @@ const Login = () => {
         <div className="flex flex-col justify-center items-center p-8 bg-orange-400 rounded-lg shadow-lg">
           <h1 className="text-2xl font-bold text-white mb-4">Simplify management with our dashboard</h1>
           <p className="text-white text-center mb-6">Simplify your e-commerce management with our user-friendly admin dashboard.</p>
-          <img className="w-2/5 rounded-lg" src={avartar} alt="nature image" />
+          <img className="w-2/5 rounded-lg" src={logo_preview} alt="nature image" />
         </div>
 
         {/* Right Section - Signup Form */}
@@ -38,7 +38,7 @@ const Login = () => {
         <div className="flex justify-center p-8 bg-white rounded-lg shadow-lg">
           <form onSubmit={handleSubmit} className="space-y-6 w-full">
           <div className="flex justify-center">
-        <img className="w-2/5 rounded-lg " src={logo} alt="nature image"/>
+        <img className="w-2/5 rounded-lg " src={styling_image} alt="nature image"/>
         
         </div>
         <div className="flex ">

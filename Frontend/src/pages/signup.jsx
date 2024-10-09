@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import signupimg from "../assets/image.png";
-import logo from "../assets/image copy.png"
+import styling_image from "../assets/frontend_assets/loginSignup_image.png";
+import logo_preview from "../assets/frontend_assets/logo_preview.png"
 
 import { Link } from "react-router-dom";
 
@@ -38,13 +38,13 @@ const Register = () => {
           <p className="text-white mt-6">
             Simplify your e-commerce management with our user-friendly admin dashboard.
           </p>
-          <img className="w-2/5" src={signupimg} alt="Company Logo" />
+          <img className="w-2/5" src={styling_image} alt="Company Logo" />
         </div>
 
         <div className="flex justify-center p-8 bg-white rounded-br-[4rem] shadow-lg">
           <form onSubmit={handleSubmit} className="space-y-6 w-full">
           <div className="flex justify-center">
-              <img className="w-2/5 rounded-lg" src={logo} alt="Company Logo" />
+              <img className="w-2/5 rounded-lg" src={logo_preview} alt="Company Logo" />
             </div>
             
             {/* <div>
