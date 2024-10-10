@@ -1,5 +1,7 @@
 import Hero from '@/components/Hero'
 import LatestCollection from '@/components/LatestCollection'
+import NewsLetterBox from '@/components/NewsLetterBox'
+import OurPolicy from '@/components/OurPolicy'
 import React from 'react'
 
 const Home = () => {
@@ -7,6 +9,8 @@ const Home = () => {
     <div>
         <Hero/>
         <LatestCollection/>
+        <OurPolicy/>
+        <NewsLetterBox/>
     </div>
   )
 }
