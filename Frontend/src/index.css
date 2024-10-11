@@ -4,7 +4,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-<<<<<<< Updated upstream
+
 
 a.active hr{
     display: block;
@@ -26,5 +26,4 @@ a.active hr{
         color: white;
     }
   }
-=======
->>>>>>> Stashed changes
+
