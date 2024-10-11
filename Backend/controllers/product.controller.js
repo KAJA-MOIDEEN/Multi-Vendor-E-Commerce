@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import productModel from "../models/product.model.js";
+import productModel from "../models/product.model.js"
 
 // add product
 const addProduct = async (req, res) => {
@@ -44,7 +44,7 @@ const addProduct = async (req, res) => {
       image: imageUrl,
       date: Date.now(),
     };
-     const product = new productModel(productData)
+     const product = new ProductModel(productData)
      await product.save();
 
     res.json({
@@ -60,13 +60,25 @@ const addProduct = async (req, res) => {
     });
   }
 };
+
 // remove product
-const removeProduct = async (req, res) => {};
+const removeProduct = async (req, res) => {
+
+};
 
 // list product
-const listProduct = async (req, res) => {};
+const listProduct = async (req, res) => {
+  try {
+    const products = await productModel.find()
+    
+  } catch (error) {
+    
+  }
+};
 
 //  single product
-const singleProduct = async (req, res) => {};
+const singleProduct = async (req, res) => {
+
+};
 
 export { addProduct, removeProduct, listProduct, singleProduct };
