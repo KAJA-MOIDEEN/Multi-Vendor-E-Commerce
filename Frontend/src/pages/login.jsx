@@ -1,84 +1,33 @@
-import React, { useState } from "react";
-// import axios from "axios";
-// import { toast } from "react-toastify";
+import React, { useState } from 'react'
 
-import styling_image from "../assets/frontend_assets/loginSignup_image.png";
-import logo_preview from "../assets/frontend_assets/logo_preview.png"
+const Login =() => {
 
-const Login = () => {
+  const [currentState, setCurrentState]= useState('Sign Up');
 
-  const initialValue = {
-    username: "",
-    email: "",
-    password: "",
-    file:"",
-  };
-
-  const [LoginData, setLoginData] = useState(initialValue);
-  
-  console.log(LoginData);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
+  const onSubmitHandler = async (event) =>{
+    event.prevetDefault();
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto p-6 ">
-        {/* Left Section */}
-        <div className="flex flex-col justify-center items-center p-8 bg-orange-400 rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold text-white mb-4">Simplify management with our dashboard</h1>
-          <p className="text-white text-center mb-6">Simplify your e-commerce management with our user-friendly admin dashboard.</p>
-          <img className="w-2/5 rounded-lg" src={logo_preview} alt="nature image" />
-        </div>
+    <form onSubmit={onSubmitHandler} className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'>
+      <div className='inline-flex items-center gap-2 mb-2 mt-10'>
+        <p className='prata-regular text-3xl'>{currentState}</p>
+        <hr className='border-none h-[1.5px] w-8 bg-gray-800' />
+      </div>
+      {currentState === 'Login' ? '' :<input type="text" className='w-full px-3 py-2 border border-gray-800' placeholder='Name' required/>}
+      <input type="email" className='w-full px-3 py-2 border border-gray-800' placeholder='Email' required />
+      <input type="password" className='w-full px-3 py-2 border border-gray-800' placeholder='Password' required />
+      <div className='w-full flex justify-between text-sm mt-[-8px]'>
+        <p className='cursor-pointer'>Forgot Your Password</p>
+        {
+          currentState === 'Login'
+          ? <p onClick={()=>setCurrentState('Sign Up')} className='cursor-pointer'>Create Account</p>
+          : <p onClick={()=>setCurrentState('Login')} className='cursor-pointer'>Login Here</p>
+        }
+      </div>
+      <button className='bg-black text-white font-light px-8 py-2 mt-4'>{currentState === 'Login' ? 'Sign In' : 'Sign Up' }</button>
+    </form>
+  )
+}
 
-        {/* Right Section - Signup Form */}
-        
-        <div className="flex justify-center p-8 bg-white rounded-lg shadow-lg">
-          <form onSubmit={handleSubmit} className="space-y-6 w-full">
-          <div className="flex justify-center">
-        <img className="w-2/5 rounded-lg " src={styling_image} alt="nature image"/>
-        
-        </div>
-        <div className="flex ">
-        <input value={LoginData.file} name="file" type="file" className="" onChange={(e)=>setLoginData({...LoginData,file: e.target.value[0]})} />
-          </div>
-            <div>
-              <input
-                value={LoginData.email}
-                onChange={(e) => setLoginData({ ...LoginData, email: e.target.value })}
-                placeholder="Enter Email"
-                name="email"
-                type="email"
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-              />
-            </div>
-
-            <div>
-              <input
-                value={LoginData.password}
-                onChange={(e) => setLoginData({ ...LoginData, password: e.target.value })}
-                placeholder="Enter Password"
-                name="password"
-                type="password"
-                required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"/>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-amber-700 transition duration-300">
-                Signup
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-    </div>
-  );
-};
-
-export default Login;
+export default Login
