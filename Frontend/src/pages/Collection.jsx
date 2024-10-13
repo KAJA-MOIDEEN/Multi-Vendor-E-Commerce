@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Title from '@/components/Title'
 
 const Collection = () => {
-  const {products} = useContext(ShopContext)
+  const {products , search, showSearch } = useContext(ShopContext)
   const [showFilter, setShowFilter] = useState(true)
   const [filterProducts, setFilterProducts] = useState([])
   const [category, setCategory] = useState([])
@@ -32,6 +32,9 @@ const Collection = () => {
 
   const applyFiltre = () =>{
     let productsCopy  = products.slice();
+    if (showSerach && search) {
+      productscopy = productsCopy.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+    }
 
     if(category.length > 0) {
       productsCopy = productsCopy.filter(item => category.includes(item.category))
@@ -70,7 +73,7 @@ const Collection = () => {
 
   useEffect(()=>{
     applyFiltre()
-  },[category, subCategory])
+  },[category, subCategory,search,showSearch])
 
   useEffect(()=>{
     sortProduct();
