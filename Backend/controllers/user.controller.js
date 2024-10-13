@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 
 //create jwt token
 const createToken = async(_id) => {
-    return await jwt.sign({_id}, process.env.SECRET_KEY)
+    return await jwt.sign({_id}, process.env.JWT_SECRET)
     }
 
 // Route for user login

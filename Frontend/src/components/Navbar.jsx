@@ -5,6 +5,7 @@ import { ShopContext } from '@/context/ShopContext.jsx';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  const {setShowSearch} =  useContext(ShopContext);
   const {getCartCount} = useContext(ShopContext);
 
   return (
@@ -38,7 +39,7 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-6">
-        <img src={assets.search_icon} className="w-5 cursor-pointer" alt="Search Icon" />
+        <img onClick={()=>setShowSearch(true)} src={assets.search_icon} className="w-5 cursor-pointer" alt="Search Icon" />
         <div className="group relative">
           <img className="w-5 cursor-pointer" src={assets.profile_icon} alt="Profile Icon" />
           <div className="group-hover:block hidden absolute dropdown-menu right-0 p-4">
