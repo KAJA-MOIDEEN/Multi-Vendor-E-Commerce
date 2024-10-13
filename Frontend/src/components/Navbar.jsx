@@ -5,9 +5,7 @@ import { ShopContext } from '@/context/ShopContext.jsx';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const {setShowSearch} =  useContext(ShopContext);
-  const {getCartCount} = useContext(ShopContext);
-
+  const {setShowSearch , getCartCount} =  useContext(ShopContext);
   return (
     <>
     <div className='flex items-center justify-between'>
@@ -22,24 +20,24 @@ const Navbar = () => {
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hover:block hidden" />
         </NavLink>
 
-        <NavLink to="/Collection" className="flex flex-col items-center gap-1 hover:text-black">
+        <NavLink to="/collection" className="flex flex-col items-center gap-1 hover:text-black">
           <p>Collection</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hover:block hidden" />
         </NavLink>
 
-        <NavLink to="/About" className="flex flex-col items-center gap-1 hover:text-black">
+        <NavLink to="/about" className="flex flex-col items-center gap-1 hover:text-black">
           <p>About</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hover:block hidden" />
         </NavLink>
 
-        <NavLink to="/Contact" className="flex flex-col items-center gap-1 hover:text-black">
+        <NavLink to="/contact" className="flex flex-col items-center gap-1 hover:text-black">
           <p>Contact</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hover:block hidden" />
         </NavLink>
       </ul>
 
       <div className="flex items-center gap-6">
-        <img onClick={()=>setShowSearch(true)} src={assets.search_icon} className="w-5 cursor-pointer" alt="Search Icon" />
+        <NavLink to={"/collection"}><img onClick={()=>setShowSearch(true)} src={assets.search_icon} className="w-5 cursor-pointer" alt="Search Icon" /></NavLink>
         <div className="group relative">
           <img className="w-5 cursor-pointer" src={assets.profile_icon} alt="Profile Icon" />
           <div className="group-hover:block hidden absolute dropdown-menu right-0 p-4">
