@@ -86,21 +86,19 @@ const Collection = () => {
       <div className="min-w-60">
         <p
           onClick={() => setShowFilter(!showFilter)}
-          className="my-2 text-xl flex item-center cursor-pointer gap-2"
-        >
+          className="my-2 text-xl flex item-center cursor-pointer gap-2">
           FILTERS
           <img
             className={`h-3 mt-2 sm:hidden ${showFilter ? "rotate-90" : ""}`}
             src={assets.dropdown_icon}
-            alt=""
-          />
+            alt=""/>
         </p>
 
         <div
           className={`border border-grey-300 pl-5 py-3 mt-6 ${
             showFilter ? "" : "hidden"
-          } sm:block`}
-        >
+          } sm:block`}>
+
           <p className="mb-3 text-sm font-medium">CATEGORIES</p>
           <div className="flex flex-col gap-2 text-sm font-light text-grey-700">
             <p className="flex gap-2">
@@ -136,8 +134,8 @@ const Collection = () => {
         <div
           className={`border border-grey-300 pl-5 py-3 my-5 ${
             showFilter ? "" : "hidden"
-          } sm:block`}
-        >
+          } sm:block`}>
+
           <p className="mb-3 text-sm font-medium">TYPE</p>
           <div className="flex flex-col gap-2 text-sm font-light text-grey-700">
             <p className="flex gap-2">
@@ -169,6 +167,7 @@ const Collection = () => {
             </p>
           </div>
         </div>
+      </div>
         {/* Right Side */}
         <div className="flex-1">
           <div className="flex justify-between text-base sm:text-2xl mb-4">
@@ -196,7 +195,6 @@ const Collection = () => {
             ))}
           </div>
         </div>
-      </div>
     </div>
   );
 };
