@@ -1,12 +1,13 @@
-import { assets } from '@/assets/admin_assets/assets';
+import { assets } from '../assets/frontend_assets/assets.js';
 import { ShopContext } from '@/context/ShopContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useLoaderData, useLocation } from 'react-router-dom';
 
-const searchBar = () => {
+const SearchBar = () => {
     const { search,setSearch,showSearch,setShowSearch} = useContext(ShopContext);
     const [visible,setVisible] = useState(false)
     const location = useLocation();
+    
     useEffect(()=>{
         if(location.pathname.includes('collection') ){
             setVisible(true);
@@ -30,4 +31,4 @@ const searchBar = () => {
   ) :null
 }
 
-export default searchBar
+export default SearchBar

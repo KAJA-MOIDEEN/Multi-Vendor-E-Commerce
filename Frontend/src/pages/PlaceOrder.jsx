@@ -1,12 +1,12 @@
-import { assets } from '@/assets/admin_assets/assets'
+import { assets } from '../assets/frontend_assets/assets.js'
 import CartTotal from '@/components/CartTotal'
 import Title from '@/components/Title'
 import { ShopContext } from '@/context/ShopContext'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 const PlaceOrder = () => {
   const [method,setMethod] = useState('cod');
-  const {navigate} = usecontext(ShopContext)
+  const {navigate} = useContext(ShopContext)
 
 
   return (
@@ -49,7 +49,7 @@ const PlaceOrder = () => {
             {/* ------Payment Method Selection------ */}
             <div className='flex gap-3 flec-col lg:flex-row'>
               <div onClick={()=>setMethod('stripe')} className='flec items-center gap-3 border p-2 px-3 cursor-pointer'>
-              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === '' ? 'bg-green-400' : ''}`}></p>
+              <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'stripe' ? 'bg-green-400' : ''}`}></p>
 
                 <img className='h-5 mx-4' src={assets.stripe_logo} alt="" />
               </div>

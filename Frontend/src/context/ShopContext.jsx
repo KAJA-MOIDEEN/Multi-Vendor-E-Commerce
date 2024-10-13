@@ -9,7 +9,7 @@ const ShopContextProvider = (props) => {
   const currency = "$";
   const delivery_fee = 10;
   const [search,setSearch] = useState('');
-  const [shsowSearch,setShowSearch ] = useState(false);
+  const [showSearch,setShowSearch ] = useState(false);
 
   const [cartItems, setCartItems] = useState({});
   const navigate = useNavigate();
@@ -81,7 +81,8 @@ const ShopContextProvider = (props) => {
     addToCart,
     getCartCount,
     updateQuantity,
-    getCartAmount,navigate
+    getCartAmount,
+    navigate
   };
 
   return (
