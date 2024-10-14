@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Orders from "./pages/Orders";
+import UserProfile from "./pages/MyProfile";
 import PlaceOrder from "./pages/PlaceOrder";
 import Product from "./pages/Product";
 import { Routes, Route } from "react-router-dom";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/UserProfile" element={<UserProfile />}/>
       </Routes>
       <Footer />
     </div>
