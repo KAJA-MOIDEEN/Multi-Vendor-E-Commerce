@@ -1,5 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
-import {productModel} from "../models/product.model.js"
+import productModel from "../models/product.model.js"
+import { addImgToCloudinary } from "../middleware/cloudinaryMiddleware.js";
 
 // add product
 const addProduct = async (req, res) => {
@@ -22,15 +22,8 @@ const addProduct = async (req, res) => {
     const images = [image1, image2, image3, image4].filter(
       (item) => item !== undefined
     );
-
-    const imageUrl = await Promise.all(
-      images.map(async (item) => {
-        let result = await cloudinary.uploader.upload(item.path, {
-          resource_type: "image",
-        });
-        return result.secure_url;
-      })
-    );
+    // add images to cloudinary
+    const imageUrl = await addImgToCloudinary(images) 
     console.log(imageUrl);
 
     const productData = {
@@ -64,7 +57,6 @@ const addProduct = async (req, res) => {
 const removeProduct = async (req, res) => {
   try {
     await productModel.findByIdAndDelete(req.body.id)
-
     res.json({ success: true, message: "product removed successfully" });
   } catch (error) {
     console.log(error)

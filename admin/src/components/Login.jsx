@@ -1,12 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { backendUrl } from '../App';
+import { toast } from 'react-toastify';
 
-const Login = () => {
+
+const Login = ({setToken}) => {
   const [currentState, setCurrentState] = useState('Login');
-  
+
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if(token){
+     setToken(token)
+     }
+ },[]);
+
+
   const initialValue = {
     name: '', 
     email: '', 
     password: '', 
+    phone: '',
+    address: '',
+    companyName: '',
+    aadhaar: '',
+    pan: '',
+    GST:""
   };
   
   const inputValue = useRef(initialValue);
@@ -19,12 +37,43 @@ const Login = () => {
       const name = inputValue.current.name?.value;
       const email = inputValue.current.email?.value;
       const password = inputValue.current.password?.value;
+      const phone = inputValue.current.phone?.value;
+      const address = inputValue.current.address?.value;
+      const company = inputValue.current.companyName?.value;
+      const aadhaar = inputValue.current.aadhaar?.value;
+      const pan = inputValue.current.pan?.value;
+      const GST = inputValue.current.GST?.value;
 
-      console.log({ name, email, password });
-      
-      // Further logic to handle login/signup
+      if (currentState === 'Sign Up') {
+        const data = {
+          name, email, password, phone, address, company, aadhaar, pan, GST
+        };
+        const response = await axios.post(`${backendUrl}/api/user/admin-signup`, data);
+        if (response.data.success) {
+          toast.success(response.data.message);
+          setCurrentState('Login');
+        }
+        if(!response.data.success){
+          toast.error(response.data.message);
+        }
+      } else {
+        const data = {
+          email:email,
+          password:password
+        }
+        const  response = await axios.post(`${backendUrl}/api/user/admin-login`,data);
+        if(response.data.success){
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+          toast.success(response.data.message);
+        }else{
+          toast.error(response.data.message);
+        }
+
+      }
     } catch (error) {
       console.error(error);
+      toast.error(error.message)
     }
   };
 
@@ -35,17 +84,61 @@ const Login = () => {
         <hr className='border-none h-[1.5px] w-8 bg-gray-800' />
       </div>
       
-      {/* Conditionally render name field only for Sign Up */}
-      {currentState === 'Login' ? null : (
-        <input 
-          ref={(el) => inputValue.current.name = el} 
-          type="text" 
-          className='w-full px-3 py-2 border border-gray-800' 
-          placeholder='Name' 
-          required 
-        />
+      {/* Conditionally render fields for Sign Up */}
+      {currentState === 'Sign Up' && (
+        <>
+          <input 
+            ref={(el) => inputValue.current.name = el} 
+            type="text" 
+            className='w-full px-3 py-2 border border-gray-800' 
+            placeholder='Name' 
+            required 
+          />
+          <input 
+            ref={(el) => inputValue.current.phone = el} 
+            type="text" 
+            className='w-full px-3 py-2 border border-gray-800' 
+            placeholder='Phone' 
+            required 
+          />
+          <input 
+            ref={(el) => inputValue.current.address = el} 
+            type="text" 
+            className='w-full px-3 py-2 border border-gray-800' 
+            placeholder='Address' 
+            required 
+          />
+          <input 
+            ref={(el) => inputValue.current.companyName = el} 
+            type="text" 
+            className='w-full px-3 py-2 border border-gray-800' 
+            placeholder='Company Name' 
+            required 
+          />
+          <input 
+            ref={(el) => inputValue.current.aadhaar = el} 
+            type="text" 
+            className='w-full px-3 py-2 border border-gray-800' 
+            placeholder='Aadhaar Number' 
+            required 
+          />
+          <input 
+            ref={(el) => inputValue.current.pan = el} 
+            type="text" 
+            className='w-full px-3 py-2 border border-gray-800' 
+            placeholder='PAN Number' 
+            required 
+          />
+          <input 
+            ref={(el) => inputValue.current.GST = el} 
+            type="text" 
+            className='w-full px-3 py-2 border border-gray-800' 
+            placeholder='GST' 
+            required 
+          />
+        </>
       )}
-
+      
       <input 
         ref={(el) => inputValue.current.email = el} 
         type="email" 

@@ -1,4 +1,5 @@
 import userModel from "../models/user.model.js";
+import adminModel from "../models/admin.model.js"
 import validator from "validator"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -75,24 +76,69 @@ const registerUser = async (req, res) => {
     }
 } 
 
+// Route for user signUp
+const adminSignup = async (req,res)=>{
+    try {
+        const {email,password} = req.body;
+        console.log(req.body);
+        
+        // checking user already exists or not
+        const userEmail = await adminModel.findOne({email});
+        if (userEmail) {
+           return res.json({message:"Email already exists",success:false})
+        }
+        // validationg email format & strong password
+        if(!validator.isEmail(email)){
+            return res.json({success:false, message: "Please enter a valid email"})
+        }
+        if(password.length < 8){
+            console.log("Please Enter Strong Email");
+            return res.json({success:false, message: "Please Enter Strong password"})
+            }
+            // hashing user password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password,salt);
+            // creating new admin or vendor
+            const newAdmin = new adminModel({
+                ...req.body,
+                password: hashedPassword,
+            })
+            // saving admin to database
+            const admin = await newAdmin.save();
+            // generating token
+            const token = await createToken(admin._id)
+            // sending response
+            res.status(200).json({success:true, message: "Admin created successfully"})
+        
+    } catch (error) {
+        console.log(error);
+        res.json({
+            success:false,
+            message:error.message
+        })
+        
+    }
+}
 
 // Route for admin login
 const adminLogin = async (req, res) => {
   try {
     const {email,password} = req.body
-    console.log(email,password);
-    
+    const admin = await adminModel.findOne({email});
+    if (!admin) {
+        return res.json({success:false,message:"Invalid Email or Password"})
+        }
+        // comparing password
+        const isMatch = await bcrypt.compare(password, admin.password);
+        if (!isMatch) {
+            return res.json({success:false,message:"Invalid Email or Password"})
+            }
 
-    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-        const token = jwt.sign(email+password,process.env.JWT_SECRET);
-        console.log(token);
-        
-        res.json({success:true,token})
-        } else {
-            res.json({success:false,message:"Invalid credentials"})
+            // generating token
+            const token = await createToken(admin._id)
+            // sending response
+            res.status(200).json({success:true,message:"logged in successfully",token})
 
-
-    }
     
   } catch (error) {
     console.log(error);
@@ -104,4 +150,4 @@ const adminLogin = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, adminLogin };
+export { loginUser, registerUser, adminLogin , adminSignup};
