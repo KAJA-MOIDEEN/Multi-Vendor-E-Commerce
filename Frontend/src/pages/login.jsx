@@ -5,7 +5,13 @@ const Login =() => {
   const [currentState, setCurrentState]= useState('Sign Up');
 
   const onSubmitHandler = async (event) =>{
-    event.prevetDefault();
+    try {
+      event.prevetDefault();
+        
+    } catch (error) {
+      
+    }
+    
   }
 
   return (

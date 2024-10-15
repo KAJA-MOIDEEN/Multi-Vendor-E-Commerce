@@ -14,11 +14,24 @@ import Product from "./pages/Product";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from "react";
+import Aos from "aos";
+import 'aos/dist/aos.css';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
+    // Initialize AOS when the component mounts
+    useEffect(() => {
+      Aos.init({
+        duration: 1000, // Animation duration (in ms)
+        once: true,     // Whether animation should happen only once
+      });
+    }, []);
+    
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
     <ToastContainer />
+    <ScrollToTop/>
       <Navbar />
       <SearchBar />
       <Routes>
