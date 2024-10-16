@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import {assets} from '../assets/admin_assets/assets.js'
+import { backendUrl } from '../App.jsx'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
-const Add = () => {
+const Add = ({token}) => {
 
     const[image1,setImage1] = useState(false)
     const[image2,setImage2] = useState(false)
@@ -10,13 +12,13 @@ const Add = () => {
     const[image4,setImage4] = useState(false)
 
 
-    const [name,satName] = useState("");
+    const [name,setName] = useState("");
     const [description,setDescription] = useState("")
     const [price,setPrice] = useState("")
     const [category,setCategory] = useState("Men")
     const [subCategory,setSubCategory] = useState("Topwear")
     const [bestseller, setBestseller] = useState("false")
-    const [sizes, setSizes] = useState([]);
+    const [sizes, setSizes] = useState('');
 
     const onSubmitHandle = async(e) => {
       e.preventDefault();
@@ -38,10 +40,16 @@ const Add = () => {
         image3 && formData.append("image3",image3)
         image4 && formData.append("image4",image4)
 
-        const response = await axios.post()
+        const response = await axios.post(backendUrl + '/api/product/add', formData, {headers:{token}})
+        console.log(response);
+        if(!response.data.success){
+          toast.error("product not added")
+        }
+        toast.success(response.data.message)
+        
 
       } catch (error) {
-        
+        toast.error(error.message)
       }
     }
 
@@ -54,19 +62,19 @@ const Add = () => {
     <div  className="flex gap-2">
       <label htmlFor="image1">
         <img src={!image1 ? assets.upload_area :URL.createObjectURL(image1)} alt="" />
-        <input onClick={(e)=>setImage1(e.target.files[0])} type='file' id="image1" hidden/>
+        <input onChange={(e)=>setImage1(e.target.files[0])} type='file' id="image1" hidden/>
       </label>
       <label htmlFor="image2">
         <img src={!image2 ? assets.upload_area :URL.createObjectURL(image2)} alt="" />
-        <input onClick={(e)=>setImage2(e.target.files[0])} type='file' id="image2" hidden/>
+        <input onChange={(e)=>setImage2(e.target.files[0])} type='file' id="image2" hidden/>
       </label>
       <label htmlFor="image3">
         <img src={!image3 ? assets.upload_area :URL.createObjectURL(image3)} alt="" />
-        <input onClick={(e)=>setImage3(e.target.files[0])} type='file' id="image3" hidden/>
+        <input onChange={(e)=>setImage3(e.target.files[0])} type='file' id="image3" hidden/>
       </label>
       <label htmlFor="image4">
         <img src={!image4 ? assets.upload_area :URL.createObjectURL(image4)} alt="" />
-        <input onClick={(e)=>setImage4(e.target.files[0])} type='file' id="image4" hidden/>
+        <input onChange={(e)=>setImage4(e.target.files[0])} type='file' id="image4" hidden/>
       </label>
     </div>
     </div>
