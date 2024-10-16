@@ -18,11 +18,6 @@ const App = () => {
   const [token, setToken] = useState("");
 
   useEffect(()=>{
-    setToken(token)
-    console.log(token);
-  },[setToken]);
-
-  useEffect(()=>{
     const token = localStorage.getItem("token");
     if(token){
      setToken(token)
@@ -31,14 +26,13 @@ const App = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {token === "" ? <Login setToken = {setToken} token={token}/> :  <>
+      {token == "" ? <Login setToken = {setToken} token={token}/> :  <>
         <Navbar setToken={setToken}/>
         <hr />
         <div className="flex w-full">
           <Sidebar />
           <div className="w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base">
             <Routes>
-              <Route path="/" element={<Add />} />
               <Route path="/add" element={<Add token={token}/>} />
               <Route path="/list" element={<List token={token}/>} />
               <Route path="/orders" element={<Orders />} />

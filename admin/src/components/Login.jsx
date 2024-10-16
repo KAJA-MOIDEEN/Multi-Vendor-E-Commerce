@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 
 const Login = ({setToken}) => {
+
   const [currentState, setCurrentState] = useState('Login');
 
   useEffect(()=>{
@@ -13,7 +14,6 @@ const Login = ({setToken}) => {
      setToken(token)
      }
  },[]);
-
 
   const initialValue = {
     name: '', 

@@ -12,6 +12,8 @@ const createToken = async(_id) => {
 // Route for user login
 const loginUser = async (req, res) => {
     const {email,password} = req.body
+    console.log(req.body);
+    
 
     const user = await userModel.findOne({email})
     
@@ -69,7 +71,7 @@ const registerUser = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         res.json({
             success: false,
             message: error.message

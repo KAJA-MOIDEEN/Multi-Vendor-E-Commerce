@@ -18,13 +18,15 @@ const addProduct = async (req, res) => {
     const image2 = req.files.image2 && req.files.image2[0];
     const image3 = req.files.image3 && req.files.image3[0];
     const image4 = req.files.image4 && req.files.image4[0];
-
-    const images = [image1, image2, image3, image4].filter(
-      (item) => item !== undefined
-    );
+    
+    const images = [image1, image2, image3, image4].filter((item) => item !== undefined);
+    
     // add images to cloudinary
-    const imageUrl = await addImgToCloudinary(images) 
-    console.log(imageUrl);
+    const imageUrl = await addImgToCloudinary(images);
+
+          if(!imageUrl){
+            return res.status(400).json({ message: "Error uploading images:" });
+          }
 
     const productData = {
       name,

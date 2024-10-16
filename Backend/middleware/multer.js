@@ -1,9 +1,9 @@
 import multer from "multer";
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads');  // Set the destination folder for uploads
-      },
+    // destination: function (req, file, cb) {
+    //     cb(null, 'uploads');  // Set the destination folder for uploads
+    //   },
     filename:(req,file,cd)=>{
         cd(null,file.originalname)
     }
