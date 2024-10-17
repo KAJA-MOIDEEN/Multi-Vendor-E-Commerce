@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const Login =() => {
 
-  const [currentState, setCurrentState]= useState('Sign Up');
+  const [currentState, setCurrentState]= useState('Login');
   const {token, setToken, navigate, backendUrl} = useContext(ShopContext)
 
   const nameRef = useRef(null);
@@ -48,13 +48,7 @@ const Login =() => {
         toast.error(error.message);
       }
   }
- useEffect(()=>{
-  const token = localStorage.getItem("token")
-  if(token){
-    setToken(token)
-    }
- },[])
-
+ 
  useEffect(()=>{
   if(token){
     navigate('/')

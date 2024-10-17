@@ -6,8 +6,7 @@ import { toast } from 'react-toastify';
 
 const Navbar = () => { 
   const [visible, setVisible] = useState(false); 
-  const { setShowSearch, getCartCount, setToken, token } = useContext(ShopContext); 
-  const navigate = useNavigate();
+  const { setShowSearch, getCartCount, setToken, token ,navigate } = useContext(ShopContext); 
 
   const handleToggle = (value) => {
     token
@@ -23,10 +22,6 @@ const Navbar = () => {
       : toast.error("Please login to continue");
   };
   
-  
-  useEffect(() => {
-    console.log("Token changed in context:", token);
-  }, [token]);
 
   const handleLogout = () => {
     if (token) {
@@ -40,6 +35,10 @@ const Navbar = () => {
       
     }
   };
+  
+  useEffect(() => {
+    setToken(localStorage.getItem("token"))
+  }, []);
 
   return (
     <>
