@@ -27,6 +27,7 @@ const ShopContextProvider = (props) => {
     if (cartData[itemId]) {
       if (cartData[itemId][size]) {
         cartData[itemId][size] += 1;
+        toast.success("Product added");
       } else {
         cartData[itemId][size] = 1;
       }
@@ -93,6 +94,10 @@ const ShopContextProvider = (props) => {
   useEffect(()=>{
     getProductsData();
   },[])
+
+  
+  
+
 
   const value = {
     products,

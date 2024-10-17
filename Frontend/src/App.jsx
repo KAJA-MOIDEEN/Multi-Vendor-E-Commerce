@@ -8,7 +8,7 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Orders from "./pages/Orders";
-import UserProfile from "./pages/MyProfile";
+import MyProfile from "./pages/MyProfile";
 import PlaceOrder from "./pages/PlaceOrder";
 import Product from "./pages/Product";
 import { Routes, Route } from "react-router-dom";
@@ -27,6 +27,8 @@ function App() {
         once: true,     // Whether animation should happen only once
       });
     }, []);
+
+    
     
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
@@ -44,7 +46,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/UserProfile" element={<UserProfile />}/>
+        <Route path="/my-profile" element={<MyProfile />}/>
       </Routes>
       <Footer />
     </div>

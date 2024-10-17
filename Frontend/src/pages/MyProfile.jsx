@@ -3,7 +3,7 @@ import Title from '../components/Title'
 import { useRef, useState} from 'react'
 import { assets } from '../assets/frontend_assets/assets.js'
 
-const UserProfile = () =>{
+const MyProfile = () =>{
     const inputRef = useRef(null)
     const [Image, setImage] = useState ("")
 
@@ -107,4 +107,4 @@ const UserProfile = () =>{
   )
 }
 
-export default UserProfile
+export default MyProfile
