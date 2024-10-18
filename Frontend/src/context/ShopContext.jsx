@@ -171,7 +171,8 @@ const ShopContextProvider = (props) => {
     setToken,
     token,
     profileImage, 
-    setProfileImage
+    setProfileImage,
+    setCartItems
   };
 
   return (
