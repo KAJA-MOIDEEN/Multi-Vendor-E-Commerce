@@ -17,20 +17,19 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
+    <div className="flex flex-col sm:flex-row justify-center gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
       
-      {/* ---------- Right Section (Profile Info) ---------- */}
       <div className="flex flex-col w-full sm:max-w-[480px] gap-4 mb-5">
         <div className="text-2xl">
           <Title text1="My" text2="Profile" />
         </div>
 
         {/* Profile Image Upload */}
-        <div onClick={handleImageClick} className="cursor-pointer">
+        <div onClick={handleImageClick} className="cursor-pointer flex justify-center">
           {profileImage ? (
             <img src={URL.createObjectURL(profileImage)} alt="Profile" className="w-32 h-32 rounded-full object-cover mb-5" />
           ) : (
-            <img src={assets.profile_icon} alt="Profile Icon" className="w-32 h-32 rounded-full object-cover" />
+            <img src={assets.profile_icon} alt="Profile Icon" className="w-32 h-32 rounded-full object-contain" />
           )}
           <input className="hidden" type="file" onChange={handleImageChange} ref={inputRef} />
         </div>
@@ -43,22 +42,28 @@ const MyProfile = () => {
 
         <InputField label="D.O.B" id="DOB" type="date" />
         <InputField label="Email" id="Email" type="email" placeholder="Example: xyz@gmail.com" />
-        <InputField label="Contact No" id="ContactNo" type="tel" placeholder="Contact No" />
+        <InputField label="Street" className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='Street'/>
+
+        <div className='flex gap-3'>
+          <InputField label='City' className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='City'/>
+          <InputField label='State' className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='State'/>
+        </div>
+
+        <div className='flex gap-3'>
+          <InputField label='Zipcode' className='border border-gray-300 py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode'/>
+          <InputField label='Country' className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='Country'/>
+        </div>
+
+        <div className='flex gap-3'>
+          <InputField label="Contact No" id="ContactNo" type="tel" placeholder="Contact No" />
+        </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full justify-center">
           <ActionButton label="Edit" />
           <ActionButton label="Save" />
+          <ActionButton label="Become a Seller" />
         </div>
-      </div>
-
-      {/* ---------- Left Section (Delivery Information) ---------- */}
-      <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
-        <div className="text-xl sm:text-2xl my-3">
-          <Title text1="DELIVERY" text2="INFORMATION" />
-        </div>
-
-        <DeliveryForm />
       </div>
     </div>
   );
@@ -79,28 +84,6 @@ const InputField = ({ label, id, type = 'text', placeholder = '' }) => (
 
 const ActionButton = ({ label }) => (
   <button className="bg-black text-white font-light px-8 py-2 mt-4">{label}</button>
-);
-
-const DeliveryForm = () => (
-  <>
-    <div className="flex gap-3">
-      <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="text" placeholder="First name" />
-      <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="text" placeholder="Last name" />
-    </div>
-    <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="email" placeholder="Email address" />
-    <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="text" placeholder="Street" />
-    <div className="flex gap-3">
-      <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="text" placeholder="City" />
-      <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="text" placeholder="State" />
-    </div>
-    <div className="flex gap-3">
-      <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="number" placeholder="Zipcode" />
-      <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="text" placeholder="Country" />
-    </div>
-    <div className="flex gap-3">
-      <input className="border border-gray-300 py-1.5 px-3.5 w-full" type="number" placeholder="Phone" />
-    </div>
-  </>
 );
 
 export default MyProfile;
