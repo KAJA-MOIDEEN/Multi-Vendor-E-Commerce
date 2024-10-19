@@ -5,7 +5,8 @@ import {
   adminLogin,
   registerUser,
   adminSignup,
-  userUpdate
+  userUpdate,
+  getUserDetails
 } from "../controllers/user.controller.js";
 import authUser from "../middleware/auth.js";
 
@@ -14,7 +15,7 @@ const userRouter = express.Router();
 //Login and SignUp for user
 userRouter.post("/register", registerUser)
 userRouter.post("/login", loginUser)
-
+userRouter.get('/user-profile',authUser,getUserDetails)
 userRouter.put("/user-update",upload.single("profileImage"),authUser,userUpdate)
 
 //Login and SignUp for Adimn and Vendors

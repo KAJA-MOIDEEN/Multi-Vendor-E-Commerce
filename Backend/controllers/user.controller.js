@@ -81,8 +81,6 @@ const registerUser = async (req, res) => {
 const userUpdate = async (req, res) =>{
     const {userId,name,surname,email,address,phone,dob} = req.body
     
-    // console.log(req.body);
-    
     // console.log("adresss",address);
     
     const img = req.file 
@@ -132,11 +130,42 @@ const userUpdate = async (req, res) =>{
     }
 }
 
+const getUserDetails = async(req,res)=>{
+    
+    const { userId } = req.body
+
+    try {
+        const userData = await userModel.findById(userId);
+
+        if (userData) {
+            const user = {
+                fanme:userData.name,
+                surname:userData.surname,
+                email:userData.email,
+                phone:userData.phone,
+                dob:userData.dob.toISOString().split('T')[0],
+                address:userData.address,
+                image:userData.image
+            }
+
+            res.status(200).json({ success: true, user });
+
+            }
+
+    } catch (error) {
+        console.log(error.message);
+        res.json({
+            success: false,
+            message: "Error getting user details",
+            error: error.message
+            });
+    }
+}
+
 // Route for user signUp
 const adminSignup = async (req,res)=>{
     try {
         const {email,password} = req.body;
-        console.log(req.body);
         
         // checking user already exists or not
         const userEmail = await adminModel.findOne({email});
@@ -206,4 +235,4 @@ const adminLogin = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, adminLogin , adminSignup, userUpdate};
+export { loginUser, registerUser, adminLogin , adminSignup, userUpdate, getUserDetails};
