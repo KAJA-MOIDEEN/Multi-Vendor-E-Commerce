@@ -17,6 +17,8 @@ const ShopContextProvider = (props) => {
   const [token, setToken] = useState('')
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState('');
+  const [orders, setOrders] = useState([])
+
 
   const addToCart = async (itemId, size) => {
     if(!size){
@@ -172,7 +174,8 @@ const ShopContextProvider = (props) => {
     token,
     profileImage, 
     setProfileImage,
-    setCartItems
+    setCartItems,
+    orders, setOrders
   };
 
   return (
