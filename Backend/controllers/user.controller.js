@@ -3,6 +3,7 @@ import adminModel from "../models/admin.model.js"
 import validator from "validator"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { addImgToCloudinary } from "../middleware/cloudinaryMiddleware.js";
 
 //create jwt token
 const createToken = async(_id) => {
@@ -78,16 +79,57 @@ const registerUser = async (req, res) => {
 } 
 
 const userUpdate = async (req, res) =>{
-    const {userId} = req.body
-    // , name, surname, email, address
+    const {userId,name,surname,email,address,phone,dob} = req.body
+    
+    // console.log(req.body);
+    
+    // console.log("adresss",address);
+    
+    const img = req.file 
+    console.log("image",img)
 
-    const user = await userModel.findById(userId)
-    console.log(user);
-    res.json({
-        data:user
-    })
-    
-    
+    try {
+        const user = await userModel.findById(userId);
+        
+        if(user){
+            user.name = name || user.name;
+            user.surname = surname || user.surname;
+            user.email = email || user.email;
+            user.phone = phone || user.phone;
+
+            //convert dob string to data object
+            if (dob) {
+                user.dob = new Date(dob); // Convert the string to a Date object
+            }
+
+            if (address) {
+                user.address = {
+                street: address.street || user.address.street,
+                city: address.city || user.address.city,
+                state: address.state || user.address.state,
+                zipcode: address.zipcode || user.address.zipcode,
+                country: address.country || user.address.country,
+                };
+            }
+            if(img){
+              const imageUrl =  await addImgToCloudinary([img]);
+              user.image = imageUrl[0];
+            }
+            // saving user to database
+            const updatedUser = await user.save();
+            res.status(200).json({success:true, message: "User updated successfully", updatedUser})
+        }else{
+            res.status(404).json({ message: "User not found" });
+        }
+
+    } catch (error) {
+        console.log(error.message);
+        res.json({
+            success: false,
+            message: "Error updating user",
+            error: error.message
+        });
+    }
 }
 
 // Route for user signUp

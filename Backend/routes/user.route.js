@@ -1,4 +1,5 @@
 import express from "express";
+import upload from "../middleware/multer.js";
 import {
   loginUser,
   adminLogin,
@@ -14,7 +15,7 @@ const userRouter = express.Router();
 userRouter.post("/register", registerUser)
 userRouter.post("/login", loginUser)
 
-userRouter.post("/user-update",authUser,userUpdate)
+userRouter.put("/user-update",upload.single("profileImage"),authUser,userUpdate)
 
 //Login and SignUp for Adimn and Vendors
 userRouter.post("/admin-signup",adminSignup)

@@ -2,10 +2,23 @@ import React, { useContext, useRef } from 'react';
 import Title from '../components/Title';
 import { assets } from '../assets/frontend_assets/assets.js';
 import { ShopContext } from '@/context/ShopContext';
+import axios from 'axios';
 
 const MyProfile = () => {
-  const inputRef = useRef(null); 
-  const { profileImage, setProfileImage } = useContext(ShopContext);
+  const inputRef = useRef(null);  
+  const { profileImage, setProfileImage, token,backendUrl } = useContext(ShopContext);
+
+  // Creating refs for form fields
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const dobRef = useRef(null);
+  const emailRef = useRef(null);
+  const streetRef = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
+  const zipcodeRef = useRef(null);
+  const countryRef = useRef(null);
+  const phoneRef = useRef(null);
 
   const handleImageClick = () => {
     inputRef.current.click();
@@ -16,10 +29,37 @@ const MyProfile = () => {
     setProfileImage(file);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formToSubmit = new FormData();
+      formToSubmit.append('name', firstNameRef.current.value);
+      formToSubmit.append('surname', lastNameRef.current.value);
+      formToSubmit.append('dob', dobRef.current.value);
+      formToSubmit.append('email', emailRef.current.value);
+      formToSubmit.append('address[street]', streetRef.current.value);
+      formToSubmit.append('address[city]', cityRef.current.value);
+      formToSubmit.append('address[state]', stateRef.current.value);
+      formToSubmit.append('address[zipcode]', zipcodeRef.current.value);
+      formToSubmit.append('address[country]', countryRef.current.value);
+      formToSubmit.append('phone', phoneRef.current.value);
+
+      if (profileImage) {
+        formToSubmit.append('profileImage', profileImage);
+      }
+
+      const response = await axios.put(`${backendUrl}/api/user/user-update`, formToSubmit, {headers: {token}});
+
+      console.log('Profile updated successfully:', response.data);
+    } catch (error) {
+      console.error('Error updating profile:', error.response?.data || error.message);
+    }
+  };
+
   return (
     <div className="flex flex-col sm:flex-row justify-center gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
-      
-      <div className="flex flex-col w-full sm:max-w-[480px] gap-4 mb-5">
+      <form onSubmit={handleSubmit} className="flex flex-col w-full sm:max-w-[480px] gap-4 mb-5">
         <div className="text-2xl">
           <Title text1="My" text2="Profile" />
         </div>
@@ -36,54 +76,52 @@ const MyProfile = () => {
 
         {/* Profile Form */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full">
-          <InputField label="First Name" id="FirstName" placeholder="First Name" />
-          <InputField label="Last Name" id="LastName" placeholder="Last Name" />
+          <InputField label="First Name" ref={firstNameRef} placeholder="First Name" />
+          <InputField label="Last Name" ref={lastNameRef} placeholder="Last Name" />
         </div>
 
-        <InputField label="D.O.B" id="DOB" type="date" />
-        <InputField label="Email" id="Email" type="email" placeholder="Example: xyz@gmail.com" />
-        <InputField label="Street" className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='Street'/>
+        <InputField label="D.O.B" ref={dobRef} type="date" />
+        <InputField label="Email" ref={emailRef} type="email" placeholder="Example: xyz@gmail.com" />
+        <InputField label="Street" ref={streetRef} type="text" placeholder="Street" />
 
-        <div className='flex gap-3'>
-          <InputField label='City' className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='City'/>
-          <InputField label='State' className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='State'/>
+        <div className="flex gap-3">
+          <InputField label="City" ref={cityRef} type="text" placeholder="City" />
+          <InputField label="State" ref={stateRef} type="text" placeholder="State" />
         </div>
 
-        <div className='flex gap-3'>
-          <InputField label='Zipcode' className='border border-gray-300 py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode'/>
-          <InputField label='Country' className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='Country'/>
+        <div className="flex gap-3">
+          <InputField label="Zipcode" ref={zipcodeRef} type="number" placeholder="Zipcode" />
+          <InputField label="Country" ref={countryRef} type="text" placeholder="Country" />
         </div>
 
-        <div className='flex gap-3'>
-          <InputField label="Contact No" id="ContactNo" type="tel" placeholder="Contact No" />
-        </div>
+        <InputField label="Contact No" ref={phoneRef} type="tel" placeholder="Contact No" />
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full justify-center">
-          <ActionButton label="Edit" />
           <ActionButton label="Save" />
-          <ActionButton label="Become a Seller" />
         </div>
-      </div>
+      </form>
     </div>
   );
 };
 
-const InputField = ({ label, id, type = 'text', placeholder = '' }) => (
+const InputField = React.forwardRef(({ label, type = 'text', placeholder }, ref) => (
   <div className="w-full mt-4">
-    <label htmlFor={id} className="block mb-2">{label}</label>
+    <label className="block mb-2">{label}</label>
     <input
       type={type}
-      id={id}
+      ref={ref}
       className="w-full px-5 py-2 border border-gray-800"
       placeholder={placeholder}
       required
     />
   </div>
-);
+));
 
 const ActionButton = ({ label }) => (
-  <button className="bg-black text-white font-light px-8 py-2 mt-4">{label}</button>
+  <button type="submit" className="bg-black text-white font-light px-8 py-2 mt-4">
+    {label}
+  </button>
 );
 
 export default MyProfile;
