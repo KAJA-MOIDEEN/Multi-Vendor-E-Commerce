@@ -18,6 +18,7 @@ const ShopContextProvider = (props) => {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState('');
   const [orders, setOrders] = useState([])
+  const [userProfile, setUserProfile] = useState([])
 
 
   const addToCart = async (itemId, size) => {
@@ -138,9 +139,26 @@ const ShopContextProvider = (props) => {
     }
 };
 
+const getUserProfile = async (token)=>{
+  try {
+    if(token){
+      const response = await axios.get(`${backendUrl}/api/user/user-profile`,{headers:{token}})
+      
+      if(response.data.success){
+        setUserProfile(response.data.user)
+      }
+     
+      
+    }
+  } catch (error) {
+    
+  }
+}
+
 
   useEffect(()=>{
     getProductsData();
+   
   },[])
 
   useEffect(()=>{
@@ -148,6 +166,7 @@ const ShopContextProvider = (props) => {
     if(token){
       setToken(token)
       getUserCart(token)
+      getUserProfile(token);
       }
    },[])
 
@@ -175,7 +194,8 @@ const ShopContextProvider = (props) => {
     profileImage, 
     setProfileImage,
     setCartItems,
-    orders, setOrders
+    orders, setOrders,
+    userProfile
   };
 
   return (
