@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import Aos from "aos";
 import 'aos/dist/aos.css';
 import ScrollToTop from './components/ScrollToTop';
+import BecomeSeller from "./pages/becomeSeller";
 
 function App() {
     // Initialize AOS when the component mounts
@@ -47,6 +48,7 @@ function App() {
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/my-profile" element={<MyProfile />}/>
+        <Route path="/seller-register" element={<BecomeSeller/>}/>
       </Routes>
       <Footer />
     </div>

@@ -3,7 +3,7 @@ import adminModel from "../models/admin.model.js"
 import validator from "validator"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { addImgToCloudinary } from "../middleware/cloudinaryMiddleware.js";
+import { addImgToCloudinary, deleteProfileImage } from "../middleware/cloudinaryMiddleware.js";
 
 //create jwt token
 const createToken = async(_id) => {
@@ -78,57 +78,67 @@ const registerUser = async (req, res) => {
     }
 } 
 
-const userUpdate = async (req, res) =>{
-    const {userId,name,surname,email,address,phone,dob} = req.body
-    
-    // console.log("adresss",address);
-    
-    const img = req.file 
-    console.log("image",img)
-
+const userUpdate = async (req, res) => {
+    const { userId, name, surname, email, address, phone, dob } = req.body;
+    const img = req.file; // Image provided for update
+  
     try {
-        const user = await userModel.findById(userId);
-        
-        if(user){
-            user.name = name || user.name;
-            user.surname = surname || user.surname;
-            user.email = email || user.email;
-            user.phone = phone || user.phone;
-
-            //convert dob string to data object
-            if (dob) {
-                user.dob = new Date(dob); // Convert the string to a Date object
-            }
-
-            if (address) {
-                user.address = {
-                street: address.street || user.address.street,
-                city: address.city || user.address.city,
-                state: address.state || user.address.state,
-                zipcode: address.zipcode || user.address.zipcode,
-                country: address.country || user.address.country,
-                };
-            }
-            if(img){
-              const imageUrl =  await addImgToCloudinary([img]);
-              user.image = imageUrl[0];
-            }
-            // saving user to database
-            const updatedUser = await user.save();
-            res.status(200).json({success:true, message: "User updated successfully", updatedUser})
-        }else{
-            res.status(404).json({ message: "User not found" });
+      // Find the user by ID
+      const user = await userModel.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+  
+      // Update user fields
+      user.name = name || user.name;
+      user.surname = surname || user.surname;
+      user.email = email || user.email;
+      user.phone = phone || user.phone;
+  
+      // Convert dob string to Date object, if provided
+      if (dob) {
+        user.dob = new Date(dob);
+      }
+  
+      // Update address fields if provided
+      if (address) {
+        user.address = {
+          street: address.street || user.address.street,
+          city: address.city || user.address.city,
+          state: address.state || user.address.state,
+          zipcode: address.zipcode || user.address.zipcode,
+          country: address.country || user.address.country,
+        };
+      }
+  
+      // If a new image is provided, delete the old one and upload the new one
+      if (img) {
+        await deleteProfileImage(user); // Delete old image from Cloudinary
+        const imageUrl = await addImgToCloudinary([img]); // Upload new image
+        if (imageUrl && imageUrl.length > 0) {
+          user.image = imageUrl[0]; // Assign new image URL to the user
         }
-
+      }
+  
+      // Save the updated user to the database
+      const updatedUser = await user.save();
+      return res.status(200).json({
+        success: true,
+        message: "Profile updated successfully",
+        updatedUser,
+      });
+  
     } catch (error) {
-        console.log(error.message);
-        res.json({
-            success: false,
-            message: "Error updating user",
-            error: error.message
-        });
+      console.error(error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Error updating user profile",
+        error: error.message,
+      });
     }
-}
+  };
+  
 
 const getUserDetails = async(req,res)=>{
     
@@ -145,7 +155,8 @@ const getUserDetails = async(req,res)=>{
                 phone:userData.phone,
                 dob:userData.dob.toISOString().split('T')[0],
                 address:userData.address,
-                image:userData.image
+                image:userData.image,
+                role:userData.role
             }
 
             res.status(200).json({ success: true, user });

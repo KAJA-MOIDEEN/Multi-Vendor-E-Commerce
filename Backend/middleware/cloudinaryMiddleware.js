@@ -3,6 +3,37 @@ import { v2 as cloudinary } from "cloudinary";
 import path from "path"; // Import path module
 import sharp from  "sharp"; // Import sharp module
 
+const deleteProfileImage = async (user, res) => {
+  console.log(user);
+  
+  try {
+    // Check if the user has an image set
+    if (!user.image) {
+      return res.status(400).json({
+        success: false,
+        message: 'No image to delete.',
+      });
+    }
+
+    // Extract the publicId from the Cloudinary URL
+    const publicId = await user.image.split('/').pop().split('.')[0]; // Extract file name without extension
+
+    // Delete the image from Cloudinary
+    await cloudinary.uploader.destroy(publicId);
+
+    // Set the user image to null or remove the field (depending on your requirements)
+    user.image = "your Local Url"; // Or you can do: delete user.image;
+    await user.save(); // Save the user with the updated image
+      
+  } catch (error) {
+    console.error('Error deleting profile image:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete the image. ' + error.message,
+    });
+  }
+};
+
 
 // Function to remove an image from Cloudinary
 const removeImgFromCloudinary = async (publicId) => {
@@ -118,4 +149,4 @@ const uploadWithRetry = async (item, retries = 3) => {
 //   }
 // };
 
-export { deleteProductImages, addImgToCloudinary };
+export { deleteProductImages, addImgToCloudinary, deleteProfileImage};

@@ -3,11 +3,13 @@ import Title from '../components/Title';
 import { assets } from '../assets/frontend_assets/assets.js';
 import { ShopContext } from '@/context/ShopContext';
 import axios from 'axios';
-
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 const MyProfile = () => {
   const inputRef = useRef(null);  
-  const { token, backendUrl, userProfile } = useContext(ShopContext);
+  const { token, backendUrl, userProfile} = useContext(ShopContext);
   const [profileImage, setProfileImage] = useState(null); // Manage profile image
+  const [isEditing, setIsEditing] = useState(false); // Control edit mode
 
   // Creating refs for form fields
   const firstNameRef = useRef(null);
@@ -22,7 +24,7 @@ const MyProfile = () => {
   const phoneRef = useRef(null);
 
   const handleImageClick = () => {
-    inputRef.current.click();
+    if (isEditing) inputRef.current.click(); // Only allow image upload in edit mode
   };
 
   const handleImageChange = (event) => {
@@ -32,6 +34,10 @@ const MyProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isEditing) {
+      setIsEditing(true); // Switch to edit mode
+      return;
+    }
 
     try {
       const formToSubmit = new FormData();
@@ -53,7 +59,11 @@ const MyProfile = () => {
       const response = await axios.put(`${backendUrl}/api/user/user-update`, formToSubmit, { headers: { token } });
 
       console.log('Profile updated successfully:', response.data);
+      toast.success(response.data.message);
+
+      setIsEditing(false); // Switch back to view-only mode after saving
     } catch (error) {
+      toast.error(error.message);
       console.error('Error updating profile:', error.response?.data || error.message);
     }
   };
@@ -80,6 +90,7 @@ const MyProfile = () => {
       console.log(error.message);
     }
   };
+    
 
   useEffect(() => {
     fetchProfileData();
@@ -93,7 +104,7 @@ const MyProfile = () => {
         </div>
 
         {/* Profile Image Upload */}
-        <div onClick={handleImageClick} className="cursor-pointer flex justify-center">
+        <div onClick={handleImageClick} className={`cursor-pointer flex justify-center ${isEditing ? '' : 'cursor-not-allowed'}`}>
           {profileImage ? (
             typeof profileImage === 'string' ? (
               // If profileImage is a URL (existing image)
@@ -111,36 +122,37 @@ const MyProfile = () => {
 
         {/* Profile Form */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full">
-          <InputField label="First Name" ref={firstNameRef} placeholder="First Name" />
-          <InputField label="Last Name" ref={lastNameRef} placeholder="Last Name" />
+          <InputField  label="First Name" ref={firstNameRef} placeholder="First Name" disabled={!isEditing} />
+          <InputField  label="Last Name" ref={lastNameRef} placeholder="Last Name" disabled={!isEditing} />
         </div>
 
-        <InputField label="D.O.B" ref={dobRef} type="date" />
-        <InputField label="Email" ref={emailRef} type="email" placeholder="Example: xyz@gmail.com" />
-        <InputField label="Street" ref={streetRef} type="text" placeholder="Street" />
+        <InputField  label="D.O.B" ref={dobRef} type="date" disabled={!isEditing} />
+        <InputField  label="Email" ref={emailRef} type="email" placeholder="Example: xyz@gmail.com" disabled={!isEditing} />
+        <InputField  label="Street" ref={streetRef} type="text" placeholder="Street" disabled={!isEditing} />
 
         <div className="flex gap-3">
-          <InputField label="City" ref={cityRef} type="text" placeholder="City" />
-          <InputField label="State" ref={stateRef} type="text" placeholder="State" />
+          <InputField label="City" ref={cityRef} type="text" placeholder="City" disabled={!isEditing} />
+          <InputField label="State" ref={stateRef} type="text" placeholder="State" disabled={!isEditing} />
         </div>
 
         <div className="flex gap-3">
-          <InputField label="Zipcode" ref={zipcodeRef} type="number" placeholder="Zipcode" />
-          <InputField label="Country" ref={countryRef} type="text" placeholder="Country" />
+          <InputField label="Zipcode" ref={zipcodeRef} type="number" placeholder="Zipcode" disabled={!isEditing} />
+          <InputField label="Country" ref={countryRef} type="text" placeholder="Country" disabled={!isEditing} />
         </div>
 
-        <InputField label="Contact No" ref={phoneRef} type="tel" placeholder="Contact No" />
+        <InputField label="Contact No" ref={phoneRef} type="tel" placeholder="Contact No" disabled={!isEditing} />
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full justify-center">
-          <ActionButton label="Save" />
+          <ActionButton label={isEditing ? "Save" : "Edit"} />
+          <Seller role={userProfile.role} label = {userProfile.role === "user" ? "Become a Celler" : "Seller Dashboard"}/>
         </div>
       </form>
     </div>
   );
 };
 
-const InputField = React.forwardRef(({ label, type = 'text', placeholder }, ref) => (
+const InputField = React.forwardRef(({ label, type = 'text', placeholder, disabled }, ref) => (
   <div className="w-full mt-4">
     <label className="block mb-2">{label}</label>
     <input
@@ -149,14 +161,27 @@ const InputField = React.forwardRef(({ label, type = 'text', placeholder }, ref)
       className="w-full px-5 py-2 border border-gray-800"
       placeholder={placeholder}
       required
+      disabled={disabled}
     />
   </div>
 ));
 
-const ActionButton = ({ label }) => (
+const ActionButton = ({ label}) => (
   <button type="submit" className="bg-black text-white font-light px-8 py-2 mt-4">
     {label}
   </button>
 );
+
+const Seller = ({ label , role })=>{
+  return (
+    role === "user" ?(
+    <Link to={"/seller-register"} className="bg-black text-white font-light px-8 py-2 mt-4">
+    { label }
+  </Link>) : 
+  <Link to={"/adminlogin"} className="bg-black text-white font-light px-8 py-2 mt-4">
+  { label }
+</Link>
+  )
+}
 
 export default MyProfile;
