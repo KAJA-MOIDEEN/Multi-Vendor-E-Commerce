@@ -77,6 +77,19 @@ const registerUser = async (req, res) => {
     }
 } 
 
+const userUpdate = async (req, res) =>{
+    const {userId} = req.body
+    // , name, surname, email, address
+
+    const user = await userModel.findById(userId)
+    console.log(user);
+    res.json({
+        data:user
+    })
+    
+    
+}
+
 // Route for user signUp
 const adminSignup = async (req,res)=>{
     try {
@@ -151,4 +164,4 @@ const adminLogin = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, adminLogin , adminSignup};
+export { loginUser, registerUser, adminLogin , adminSignup, userUpdate};
