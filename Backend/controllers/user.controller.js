@@ -175,37 +175,50 @@ const getUserDetails = async(req,res)=>{
 
 // Route for user signUp
 const adminSignup = async (req,res)=>{
+  console.log(req.body); // Log the entire body
     try {
-        const {email,password} = req.body;
+      
+       const { userId, company, pan, aadhar, GST,} = req.body;
         
         // checking user already exists or not
-        const userEmail = await adminModel.findOne({email});
-        if (userEmail) {
-           return res.json({message:"Email already exists",success:false})
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+           return res.json({message:"Please Loging Agin",success:false})
         }
-        // validationg email format & strong password
-        if(!validator.isEmail(email)){
-            return res.json({success:false, message: "Please enter a valid email"})
-        }
-        if(password.length < 8){
-            console.log("Please Enter Strong Email");
-            return res.json({success:false, message: "Please Enter Strong password"})
-            }
-            // hashing user password
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password,salt);
-            // creating new admin or vendor
-            const newAdmin = new adminModel({
-                ...req.body,
-                password: hashedPassword,
-            })
-            // saving admin to database
-            const admin = await newAdmin.save();
-            // generating token
-            const token = await createToken(admin._id)
-            // sending response
-            res.status(200).json({success:true, message: "Admin created successfully"})
+
+        const userEmail = await adminModel.findOne({email : user.email})
         
+        if (userEmail){
+          return res.json({
+            success: false,
+            message: "Vendor Already Exist",
+            waiting_MSG:"Please Wait For Admin verification",
+          })
+        }
+
+        const data  = {
+          userId : userId,
+          name : user.name,
+          surname : user.surname,
+          email : user.email,
+          password:  user.password,
+          phone : user.phone,
+          dob : user.dob,
+          address : user.address,
+          image : user.image,
+          company:company,
+          pan:pan,
+          aadhaar:aadhar,
+          GST:GST
+          }
+          
+          const admindata = await  adminModel.create(data);
+          console.log(admindata);
+        
+          res.json({message:"Admin created successfully", success:true })
+          
+
     } catch (error) {
         console.log(error);
         res.json({

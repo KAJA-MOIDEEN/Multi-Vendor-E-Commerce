@@ -19,7 +19,7 @@ userRouter.get('/user-profile',authUser,getUserDetails)
 userRouter.put("/user-update",upload.single("profileImage"),authUser,userUpdate)
 
 //Login and SignUp for Adimn and Vendors
-userRouter.post("/admin-signup",adminSignup)
+userRouter.post("/seller-register",authUser,adminSignup)
 userRouter.post("/admin-login", adminLogin);
 
 

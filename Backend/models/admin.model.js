@@ -4,6 +4,7 @@ const adminSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true },
     name: { type: String, required: true },
+    surname:{type:String, required:true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { 
@@ -40,6 +41,7 @@ const adminSchema = new mongoose.Schema(
         return this.role === "Vendor"; // Only required for Vendors
       },
     },
+    dob:{type:Date}
   },
   { minimize: false }
 );

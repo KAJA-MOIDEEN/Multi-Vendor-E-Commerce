@@ -11,6 +11,8 @@ import orderRouter from "./routes/order.route.js";
 // app config
 const app = express();
 const port = process.env.PORT || 4000 
+
+// Connect to MongoDB and Cloudinary
 connectDB();
 connectcloudinary()
 
@@ -33,4 +35,4 @@ app.get('/',(req,res)=>{
 
 
 app.listen(port,()=>console.log(`Server Successfully Started on http://localhost:${port}`));
-connectDB()
+connectDB();
