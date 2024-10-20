@@ -19,6 +19,7 @@ import Aos from "aos";
 import 'aos/dist/aos.css';
 import ScrollToTop from './components/ScrollToTop';
 import BecomeSeller from "./pages/becomeSeller";
+import Verify from "./pages/Verify";
 
 function App() {
     // Initialize AOS when the component mounts
@@ -49,6 +50,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/my-profile" element={<MyProfile />}/>
         <Route path="/seller-register" element={<BecomeSeller/>}/>
+        <Route path="/verify" element={<Verify/>}/>
       </Routes>
       <Footer />
     </div>
