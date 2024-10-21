@@ -108,9 +108,10 @@ const singleProduct = async (req, res) => {
     });
   }
 };
+
 const aggreProduct = async (req, res) => {
   try {
-    const {productId } = req.body
+    const {} = req.body
     const product = await orderModel.aggregate([
       {
         $unwind:"$items"

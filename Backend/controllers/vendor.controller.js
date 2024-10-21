@@ -1,4 +1,5 @@
 import adminModel from "../models/admin.model.js";
+import productModel from "../models/product.model.js";
 import userModel from "../models/user.model.js";
 
 const getVendorDetails = async (req,res) =>{
@@ -59,10 +60,39 @@ const vendorStatus = async(req,res)=>{
     
 
   } catch (error) {
-    
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message
+      });
   }
 }
 
+const vendorProducts = async(req,res)=>{
+  try {
+    const {userId} =  req.body;
 
-export { getVendorDetails, vendorStatus }
+    const vendor = await adminModel.findOne({_id:userId})
+    
+    const products = await productModel.find({ceratedBy:vendor.userId})
+    
+    if (!products) {
+      return res.json({success:false,message:"No Products Found"})
+      }
+      res.json({
+        success:true,
+        message:"Products Fetched Successfully",
+        products
+      })
+
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message
+      });
+  }
+}
+
+export { getVendorDetails, vendorStatus ,vendorProducts }
 

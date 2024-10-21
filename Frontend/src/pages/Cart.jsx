@@ -32,8 +32,8 @@ const Cart = () => {
         <Title text1={"YOUR"} text2={"CART"} />
       </div>
       <div className="flex flex-col">
-        {cartData.map((item, index) => {
-          const productData = products.find(
+        {cartData?.map((item, index) => {
+          const productData = products?.find(
             (product) => product._id === item._id
           );
           return (
