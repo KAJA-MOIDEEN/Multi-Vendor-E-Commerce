@@ -51,7 +51,7 @@ const VendorsProducts = () => {
     console.log(status);
     
     try {
-      const response = await axios.post(`${backendUrl}/api/product/update-status`,{ _id, status },{ headers: { token } }
+      const response = await axios.post(`${backendUrl}/api/user/vendor-status`,{ _id, status },{ headers: { token } }
       );
 
       if (response.data.success) {

@@ -1,5 +1,6 @@
 import productModel from "../models/product.model.js"
 import { addImgToCloudinary } from "../middleware/cloudinaryMiddleware.js";
+import orderModel from "../models/order.model.js";
 
 // add product
 const addProduct = async (req, res) => {
@@ -86,6 +87,8 @@ const listProduct = async (req, res) => {
   }
 };
 
+
+
 //  single product
 const singleProduct = async (req, res) => {
   try {
@@ -101,5 +104,32 @@ const singleProduct = async (req, res) => {
     });
   }
 };
+const aggreProduct = async (req, res) => {
+  try {
+    const {productId } = req.body
+    const product = await orderModel.aggregate([
+      {
+        $unwind:"$items"
+      },
+      {
+        $lookup:{
+          from:'vendor',
+          localField:'_id', //created by  order.item[]
+          foreignField:'_id', //vendor model _id
+          as:"products"
+        }
+      },
+      
+    ])
+    res.json({success:true,product})
+    
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
 
-export { addProduct, removeProduct, listProduct, singleProduct };
+export { addProduct, removeProduct, listProduct, singleProduct ,aggreProduct};

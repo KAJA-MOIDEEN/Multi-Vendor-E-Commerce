@@ -1,4 +1,5 @@
 import adminModel from "../models/admin.model.js";
+import userModel from "../models/user.model.js";
 
 const getVendorDetails = async (req,res) =>{
   try {
@@ -46,10 +47,16 @@ const getVendorDetails = async (req,res) =>{
   }
 }
 
-const vendorStatus = (req,res)=>{
+const vendorStatus = async(req,res)=>{
   try {
-    const { userId, status } = req.body;
-    console.log(userId,status);
+    const { _id, status } = req.body;
+    const  vendor = await adminModel.findByIdAndUpdate(_id, { status }, { new: true });
+    if (!vendor) {
+      return res.json({success:false,message:"Vendor Not Found"})
+      }
+      
+      res.json({success:true,message:"Vendor Status Updated Successfully",vendor});
+    
 
   } catch (error) {
     

@@ -8,7 +8,7 @@ import {
   getUserDetails,
 } from "../controllers/user.controller.js";
 import authUser from "../middleware/auth.js";
-import { getVendorDetails } from "../controllers/vendor.controller.js";
+import { getVendorDetails, vendorStatus } from "../controllers/vendor.controller.js";
 import { adminLogin, adminSignup } from "../controllers/admin.controller.js";
 
 const userRouter = express.Router();
@@ -23,8 +23,9 @@ userRouter.put("/user-update",upload.single("profileImage"),authUser,userUpdate)
 userRouter.post("/seller-register",authUser,adminSignup)
 userRouter.post("/admin-login", adminLogin);
 
-
+//vendor  details
 userRouter.get("/vendor-details",adminAuth,getVendorDetails)
+userRouter.post('/vendor-status',adminAuth,vendorStatus)
 
 
 
