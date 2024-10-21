@@ -195,6 +195,7 @@ const Collection = () => {
               id={item._id}
               price={item.price}
               image={item.image}
+              sellerCompany={item.sellerCompany}
             />
           ))}
         </div>

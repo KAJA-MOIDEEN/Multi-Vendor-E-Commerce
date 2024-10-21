@@ -11,6 +11,9 @@ const Product = () => {
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
 
+  console.log(products);
+  
+
   const fetchProductData = async () => {
     
     products.map((item) => {
@@ -81,6 +84,7 @@ const Product = () => {
                 </button>
               ))}
             </div>
+            <div><b>Sold By:</b> {productData.sellerCompany}</div>
           </div>
           <button onClick={()=>addToCart(productData._id,size)} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">
             ADD TO CART

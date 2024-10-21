@@ -5,19 +5,35 @@ import { toast } from 'react-toastify'
 import { AuthContext } from '../context/AuthContext'
 
 const List = () => {
-  const {token} = useContext(AuthContext);
+  const {token, role} = useContext(AuthContext);
+  console.log("Role",role);
+  
   const [list,setList] = useState([])
   const fetchList = async () => {
     try {
 
-      const response = await axios.get(backendUrl + '/api/product/list')
+      if(role === "Vendor"){
+        const response = await axios.get(backendUrl + '/api/vendor/vensorProduct',{headers:{token}})
 
-      if(response.data.success){
-        setList(response.data.products);
+        if(response.data.success){
+          setList(response.data.products);
+        }
+        else{
+          toast.error(response.data.message)
+        }
+      }else{
+        const response = await axios.get(backendUrl + '/api/product/list',{headers:{token}})
+
+        if(response.data.success){
+          setList(response.data.products);
+        }
+        else{
+          toast.error(response.data.message)
+        }
       }
-      else{
-        toast.error(response.data.message)
-      }
+
+
+      
 
       
     } catch (error) {
