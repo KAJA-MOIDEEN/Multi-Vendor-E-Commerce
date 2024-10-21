@@ -1,6 +1,7 @@
 import productModel from "../models/product.model.js"
 import { addImgToCloudinary } from "../middleware/cloudinaryMiddleware.js";
 import orderModel from "../models/order.model.js";
+import adminModel from "../models/admin.model.js";
 
 // add product
 const addProduct = async (req, res) => {
@@ -15,7 +16,8 @@ const addProduct = async (req, res) => {
       sizes,
       bestseller,
     } = req.body;
-
+    const vendor = await adminModel.findById(userId)
+    
     const image1 = req.files.image1 && req.files.image1[0];
     const image2 = req.files.image2 && req.files.image2[0];
     const image3 = req.files.image3 && req.files.image3[0];
@@ -29,10 +31,12 @@ const addProduct = async (req, res) => {
           if(!imageUrl){
             return res.status(400).json({ message: "Error uploading images:" });
           }
-
+          
+          
     const productData = {
       name,
-      ceratedBy:userId,
+      ceratedBy:vendor.userId,
+      sellerCompany:vendor.company,
       description,
       price: Number(price),
       category,
