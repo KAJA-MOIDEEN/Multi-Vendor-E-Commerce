@@ -4,12 +4,12 @@ import path from "path"; // Import path module
 import sharp from  "sharp"; // Import sharp module
 
 const deleteProfileImage = async (user, res) => {
-  console.log(user);
+  // console.log(user);
   
   try {
     // Check if the user has an image set
     if (!user.image) {
-      return res.status(400).json({
+      return res?.json({
         success: false,
         message: 'No image to delete.',
       });
