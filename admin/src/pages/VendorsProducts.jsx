@@ -1,14 +1,15 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { backendUrl, currency } from '../App';
-import { toast } from 'react-toastify';
-import { AuthContext } from '../context/AuthContext';
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { backendUrl, currency } from "../App";
+import { toast } from "react-toastify";
+import { AuthContext } from "../context/AuthContext";
+import { assets } from "../assets/admin_assets/assets";
 
 const StatusToggleButton = ({ item, updateStatus }) => {
-  const [isActive, setIsActive] = useState(item.status === 'active'); // Initial status
+  const [isActive, setIsActive] = useState(item.status === "active"); // Initial status
 
   const handleToggle = async () => {
-    const newStatus = isActive ? 'inactive' : 'active'; // Toggle between active/inactive
+    const newStatus = isActive ? "inactive" : "active"; // Toggle between active/inactive
     setIsActive(!isActive);
     await updateStatus(item._id, newStatus); // Call the function to update the status in the backend
   };
@@ -16,18 +17,18 @@ const StatusToggleButton = ({ item, updateStatus }) => {
   return (
     <button
       onClick={handleToggle}
-      className={`cursor-pointer text-lg px-4 py-2 rounded-full ${
-        isActive ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+      className={`cursor-pointer text-xs px-4 py-2 w-auto rounded-full ${
+        isActive ? "bg-green-500 text-white" : "bg-red-500 text-white"
       }`}
     >
-      {isActive ? 'Active' : 'Inactive'}
+      {isActive ? "Active" : "Inactive"}
     </button>
   );
 };
 
 const VendorsProducts = () => {
   const [list, setList] = useState([]);
-  const {token} = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
 
   const fetchList = async () => {
     try {
@@ -53,7 +54,7 @@ const VendorsProducts = () => {
       );
 
       if (response.data.success) {
-        toast.success('Status updated successfully!');
+        toast.success("Status updated successfully!");
         await fetchList(); // Refresh the list after status update
       } else {
         toast.error(response.data.message);
@@ -90,34 +91,49 @@ const VendorsProducts = () => {
 
   return (
     <>
-      <p className='mb-2'>Vendors List</p>
-      <div className='flex flex-col gap-2 '>
+      <p className="mb-2">Vendors List</p>
+      <div className="flex flex-col gap-2">
         {/* ------List Table Title------- */}
-        <div className='hidden md:grid grid-cols-[3fr_3fr_3fr_3fr_3fr_3fr] items-center py-1 px-2 border bg-gray-100 text-sm'>
+        <div className="hidden md:grid grid-cols-[3fr_3fr_3fr_3fr_1fr_2fr_2fr] items-center py-1 px-2 border bg-gray-100 text-sm">
           <b>Vendor Image</b>
           <b>Vendor Name</b>
           <b>Vendor Company</b>
           <b>Type of Products</b>
-          <b className='text-center'>Status</b>
-          <b className='text-center'>View</b>
+          <b className="text-center">Status</b>
+          <b className="text-center">View</b>
+          <b className="text-center">Remove</b>
         </div>
 
         {/* ------ Product  List ------- */}
         {list.map((item, index) => (
           <div
-            className='grid grid-cols-[3fr_3fr_3fr_3fr_3fr_3fr] md:grid-cols-[3fr_3fr_3fr_3fr_3fr_3fr] items-center gap-2 py-1  px-2 border text-sm'
+            className="grid grid-cols-[3fr_3fr_3fr_3fr_1fr_2fr_2fr] items-center gap-2 py-1 px-2 border text-sm"
             key={index}
           >
-            <img className='w-12' src={item.image[0]} alt='' />
+            <img className="w-12" src={item.image[0]} alt="" />
             <p>{item.name}</p>
             <p>{item.category}</p>
-            <p>{currency}{item.price}</p>
-            
-            {/* Pass the current item and updateStatus function to the StatusToggleButton */}
-            <StatusToggleButton item={item} updateStatus={updateStatus} />
+            <p>
+              {currency}
+              {item.price}
+            </p>
 
-            <button onClick={() => removeProduct(item._id)} className='text-right md:text-center cursor-pointer text-lg'>
-              Remove
+            {/* Status Toggle */}
+            <div className="text-center">
+              <StatusToggleButton item={item} updateStatus={updateStatus} />
+            </div>
+
+            {/* View Icon */}
+            <button className="flex justify-center cursor-pointer">
+              <img className="w-6 h-6" src={assets.view_icon} alt="View" />
+            </button>
+
+            {/* Remove Button */}
+            <button
+              onClick={() => removeProduct(item._id)}
+              className="flex justify-center cursor-pointer text-lg"
+            >
+              X
             </button>
           </div>
         ))}
