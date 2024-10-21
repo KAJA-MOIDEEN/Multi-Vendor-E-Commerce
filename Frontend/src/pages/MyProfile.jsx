@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 const MyProfile = () => {
   const inputRef = useRef(null);  
-  const { token, backendUrl, userProfile} = useContext(ShopContext);
+  const { token, backendUrl, userProfile ,role,setRole} = useContext(ShopContext);
   const [profileImage, setProfileImage] = useState(null); // Manage profile image
   const [isEditing, setIsEditing] = useState(false); // Control edit mode
 
@@ -94,6 +94,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     fetchProfileData();
+    setRole(userProfile.role)
   }, [userProfile]);
 
   return (
@@ -145,7 +146,7 @@ const MyProfile = () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full justify-center">
           <ActionButton label={isEditing ? "Save" : "Edit"} />
-          <Seller role={userProfile.role} label = {userProfile.role === "user" ? "Become a Celler" : "Seller Dashboard"}/>
+          <Seller role={role} label = {role === "user" ? "Become a Celler" : "Seller Dashboard"}/>
         </div>
       </form>
     </div>
@@ -178,7 +179,7 @@ const Seller = ({ label , role })=>{
     <Link to={"/seller-register"} className="bg-black text-white font-light px-8 py-2 mt-4">
     { label }
   </Link>) : 
-  <Link to={"/adminlogin"} className="bg-black text-white font-light px-8 py-2 mt-4">
+  <Link to={"http://localhost:5174/login"} className="bg-black text-white font-light px-8 py-2 mt-4">
   { label }
 </Link>
   )

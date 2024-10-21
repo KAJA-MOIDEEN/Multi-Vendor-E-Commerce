@@ -19,6 +19,7 @@ const ShopContextProvider = (props) => {
   const [profileImage, setProfileImage] = useState('');
   const [orders, setOrders] = useState([])
   const [userProfile, setUserProfile] = useState([])
+  const [role,setRole]=useState('')
 
 
   const addToCart = async (itemId, size) => {
@@ -158,7 +159,6 @@ const getUserProfile = async (token)=>{
 
   useEffect(()=>{
     getProductsData();
-   
   },[])
 
   useEffect(()=>{
@@ -195,7 +195,8 @@ const getUserProfile = async (token)=>{
     setProfileImage,
     setCartItems,
     orders, setOrders,
-    userProfile
+    userProfile,
+    role,setRole
   };
 
   return (

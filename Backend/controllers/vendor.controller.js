@@ -1,4 +1,5 @@
 import adminModel from "../models/admin.model.js";
+import orderModel from "../models/order.model.js";
 import productModel from "../models/product.model.js";
 import userModel from "../models/user.model.js";
 
@@ -52,10 +53,19 @@ const vendorStatus = async(req,res)=>{
   try {
     const { _id, status } = req.body;
     const  vendor = await adminModel.findByIdAndUpdate(_id, { status }, { new: true });
+    
     if (!vendor) {
       return res.json({success:false,message:"Vendor Not Found"})
       }
-      
+    
+    const user = await userModel.findById({_id:vendor.userId})
+
+    if (status && user.role  === "user") {
+     const status =  await userModel.findByIdAndUpdate(user._id, { role: "vendor" }, { new:true})
+    }
+    else if(!status && user.role  === "vendor") {
+      const status =  await userModel.findByIdAndUpdate(user._id, { role: "user" }, {new:true})
+      }
       res.json({success:true,message:"Vendor Status Updated Successfully",vendor});
     
 
@@ -68,6 +78,7 @@ const vendorStatus = async(req,res)=>{
   }
 }
 
+// Find Vendors own products
 const vendorProducts = async(req,res)=>{
   try {
     const {userId} =  req.body;
@@ -94,5 +105,36 @@ const vendorProducts = async(req,res)=>{
   }
 }
 
-export { getVendorDetails, vendorStatus ,vendorProducts }
+const getVendorOrders = async (req, res) => {
+  try {
+    const { userId } = req.body; // or req.query for GET
+    console.log("Vendor userId:", userId);
+    const vendor = await adminModel.findOne({ _id: userId });
+    console.log(vendor.userId);
+    
+    // Fetch all orders with the correct field (check if it's createdBy or ceratedBy)
+    const orders = await orderModel.find({ "items.ceratedBy": vendor.userId });
+    
+    // Log the orders fetched from the database
+    console.log("Orders found:", orders);
+
+    if (orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this vendor" });
+    }
+
+    res.json({
+      success:true, 
+      orders });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
+
+
+export { getVendorDetails, vendorStatus ,vendorProducts ,getVendorOrders }
 

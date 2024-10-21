@@ -9,19 +9,31 @@ import { AuthContext } from "../context/AuthContext";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const {token} = useContext(AuthContext);
+  const {token,role} = useContext(AuthContext);
   const fetchAllOrders = async () => {
+
     if (!token) {
       return null;
     }
     try {
-      const response = await axios.post(backendUrl + "/api/order/list",{},{ headers: { token } });
-      console.log(response.data.orders);
-      if (response.data.success) {
+      if (role==="Admin") {
+        const response = await axios.post(backendUrl + "/api/order/list",{},{ headers: { token } });
+        console.log(response.data.orders);
+        if (response.data.success) {
+          setOrders(response.data.orders);
+        } else {
+          toast.error(response.data.message);
+        }  
+      }else if (role==="Vendor"){
+        const response = await axios.get(backendUrl + "/api/vendor/vendorOrders" ,{headers: { token } });
+        console.log(response.data.orders);
+        if (response.data.success) {
         setOrders(response.data.orders);
       } else {
         toast.error(response.data.message);
       }
+      }
+      
     } catch (error) {
       toast.error(error.message);
     }
@@ -58,7 +70,8 @@ const Orders = () => {
             <div>
                 {order.items.map((item, index) => {
                   if (index === order.items.length - 1) {
-                    return (<p className="py-0.5" key={index}>{item.name} x {item.quantity}<span>{item.size}</span></p>);
+                    return (<><p className="py-0.5" key={index}>{item.name} x {item.quantity}<span>{item.size}</span></p>
+                      <p className="py-0.5" key={index}>Seller: <span>{item.sellerCompany}</span></p></>);
                   } else {
                     return (<p className="py-0.5" key={index}>{item.name} x {item.quantity}<span>{item.size}</span> ,</p>);
                   }
