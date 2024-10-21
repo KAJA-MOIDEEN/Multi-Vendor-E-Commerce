@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { backendUrl, currency } from '../App';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../context/AuthContext';
 
 const StatusToggleButton = ({ item, updateStatus }) => {
   const [isActive, setIsActive] = useState(item.status === 'active'); // Initial status
@@ -24,8 +25,9 @@ const StatusToggleButton = ({ item, updateStatus }) => {
   );
 };
 
-const VendorsProducts = ({ token }) => {
+const VendorsProducts = () => {
   const [list, setList] = useState([]);
+  const {token} = useContext(AuthContext);
 
   const fetchList = async () => {
     try {

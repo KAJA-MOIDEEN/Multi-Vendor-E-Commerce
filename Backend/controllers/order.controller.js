@@ -105,8 +105,6 @@ const placeOrderStripe = async (req, res)=>{
       success: true,session_url: sessions.url
     })
 
-
-
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -215,6 +213,27 @@ const allOrders = async (req, res) =>{
         res.json({success:false, message:error.message})
     }
 }
+
+// Vendor Order for vendor panel only vendor's own orders
+
+const vendorOrder = async (req, res) =>{
+  try {
+    // const {userId} =  req.body
+
+    // console.log(userId);
+    
+    // const orders = await orderModel.find({userId});
+    
+    // res.json({
+    //   success:true,
+    //   message:"Vendor orders data",
+    //   orders
+    //   })
+
+      } catch (error) {
+        // res.json({success:false, message:error.message})
+      } 
+  }
 
 // All orders data in User panel
 const userOrders = async (req, res) =>{

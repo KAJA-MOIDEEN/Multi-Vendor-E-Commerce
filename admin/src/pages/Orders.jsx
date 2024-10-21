@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { backendUrl, currency } from "../App";
 import { toast } from "react-toastify";
 import { assets } from "../assets/admin_assets/assets";
+import { AuthContext } from "../context/AuthContext";
 
-const Orders = ({ token }) => {
+const Orders = () => {
   const [orders, setOrders] = useState([]);
-
+  const {token} = useContext(AuthContext);
   const fetchAllOrders = async () => {
     if (!token) {
       return null;

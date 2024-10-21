@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 import { assets } from "../assets/admin_assets/assets.js";
 import { toast } from 'react-toastify';
+import { AuthContext } from '../context/AuthContext.jsx';
 
-const Navbar = ({ setToken }) => {
-  const navigate = useNavigate();
+const Navbar = () => {
+  const {setToken} = useContext(AuthContext);
 
   const logout = async() => {
     toast("Logged out successfully!");

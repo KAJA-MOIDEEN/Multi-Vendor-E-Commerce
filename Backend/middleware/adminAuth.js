@@ -8,10 +8,10 @@ const adminAuth = async (req,res,next) => {
         const token_decode = jwt.verify(token,process.env.JWT_SECRET);
 
        if(!token_decode){
-        
         return res.json({ success:false,message: "Not Authorized Login Again"})
        }
-        next()
+       req.body.userId = token_decode._id;
+        next();
     } catch (error) {
         console.log(error);
         res.json({ success: false, message:error.message})  

@@ -18,6 +18,10 @@ orderRouter.post('/razorpay',userAuth, placeOrderRazorpay)
 //user Features
 orderRouter.post('/userorders',userAuth, userOrders)
 
+//vendor Features
+orderRouter.get('/vendororders',adminAuth,vendorOrder)
+
+
 //verify payment
 orderRouter.post('/verifyStripe', authUser, verifyStripe)
 orderRouter.post('/verifyRazorpay', authUser, verifyRazorpay)

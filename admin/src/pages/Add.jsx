@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { assets } from '../assets/admin_assets/assets.js';
 import { backendUrl } from '../App.jsx';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../context/AuthContext.jsx';
 
-const Add = ({ token }) => {
+const Add = () => {
+  const {token} = useContext(AuthContext);
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);

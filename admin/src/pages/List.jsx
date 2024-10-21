@@ -1,10 +1,11 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
+import { AuthContext } from '../context/AuthContext'
 
-const List = ({token}) => {
-
+const List = () => {
+  const {token} = useContext(AuthContext);
   const [list,setList] = useState([])
   const fetchList = async () => {
     try {

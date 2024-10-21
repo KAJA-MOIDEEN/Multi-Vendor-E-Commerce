@@ -1,52 +1,61 @@
-import orderModel from '../models/order.model.js';
+import adminModel from "../models/admin.model.js";
 
-// Get all orders placed with the specific vendor
-const vendorOrders = async (req, res) => {
+const getVendorDetails = async (req,res) =>{
   try {
-    // Assuming the vendor's ID is attached to the request via auth middleware
-    const vendorId = req.user.userId;
-
-    // Fetch all orders where the vendorId matches the authenticated vendor's ID
-    const orders = await orderModel.find({ vendorId });
-
-    // Check if orders exist for the vendor
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({ success: false, message: "No orders found for this vendor." });
+    const { userId } = req.body;
+    
+    const admin = await adminModel.findById(userId)
+    
+    if (admin.role !== "Admin" && admin) {
+      return res.json({success:false,message:"Unauthorised Access"})
     }
+    const vendor = await adminModel.find({role:"Vendor"})
+    
+    if (!vendor) {
+      return res.json({success:false,message:"No Vendors found"})
+      }
 
-    // Send the response with the vendor's orders
+      const vendorDetails = vendor.map((vendor) => {
+        return {
+        id: vendor._id,
+        name: vendor.name,
+        surname:vendor.surname,
+        email:vendor.email,
+        phone:vendor.phone,
+        address:vendor.address,
+        userId:vendor.userId,
+        company:vendor.company,
+        role:vendor.role,
+        image:vendor.image,
+        dob:vendor.dob,
+        status:vendor.status,
+        pan:vendor.pan,
+        aadhaar:vendor.aadhaar,
+        GST:vendor.GST
+          }
+        });
+
+        res.json({success:true,message:"Vendor Details Fetched Successfully",vendorDetails});
+
+  } catch (error) {
+    console.log(error);
     res.json({
-      success: true,
-      message: "Vendor's orders retrieved successfully.",
-      orders
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+      success: false,
+      message: error.message
+      });
   }
-};
+}
 
-// Update the status of an order by the vendor (optional)
-const updateVendorOrderStatus = async (req, res) => {
+const vendorStatus = (req,res)=>{
   try {
-    const { orderId, status } = req.body;
+    const { userId, status } = req.body;
+    console.log(userId,status);
 
-    // Find the order and update its status if the vendorId matches the authenticated vendor
-    const updatedOrder = await orderModel.findOneAndUpdate(
-      { _id: orderId, vendorId: req.user.userId },
-      { status },
-      { new: true }
-    );
-
-    if (!updatedOrder) {
-      return res.status(404).json({ success: false, message: "Order not found or you're not authorized to update this order." });
-    }
-
-    res.json({ success: true, message: "Order status updated successfully.", updatedOrder });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    
   }
-};
+}
 
-export { vendorOrders, updateVendorOrderStatus };
+
+export { getVendorDetails, vendorStatus }
+
