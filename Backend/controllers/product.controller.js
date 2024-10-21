@@ -5,6 +5,7 @@ import { addImgToCloudinary } from "../middleware/cloudinaryMiddleware.js";
 const addProduct = async (req, res) => {
   try {
     const {
+      userId,
       name,
       description,
       price,
@@ -30,6 +31,7 @@ const addProduct = async (req, res) => {
 
     const productData = {
       name,
+      ceratedBy:userId,
       description,
       price: Number(price),
       category,
