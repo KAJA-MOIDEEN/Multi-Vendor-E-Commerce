@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import {Link} from 'react-router-dom'
 import { backendUrl, currency } from "../App";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
@@ -26,7 +27,7 @@ const StatusToggleButton = ({ item, updateStatus }) => {
   );
 };
 
-const VendorsProducts = () => {
+const VendorsList = () => {
   const [list, setList] = useState([]);
   const { token } = useContext(AuthContext);
 
@@ -124,8 +125,11 @@ const VendorsProducts = () => {
             </div>
 
             {/* View Icon */}
+            
             <button className="flex justify-center cursor-pointer">
-              <img className="w-6 h-6" src={assets.view_icon} alt="View" />
+              <Link to="/vendorsview">
+                <img className="w-6 h-6" src={assets.view_icon} alt="View" />
+              </Link>
             </button>
 
             {/* Remove Button */}
@@ -142,4 +146,4 @@ const VendorsProducts = () => {
   );
 };
 
-export default VendorsProducts;
+export default VendorsList;

@@ -5,7 +5,8 @@ import { Route, Routes } from "react-router-dom";
 import Add from "./pages/Add";
 import List from "./pages/List";
 import Orders from "./pages/Orders";
-import VendorsProducts from "./pages/VendorsProducts";
+import VendorsList from "./pages/VendorsList";
+import VendorsView from "./pages/VendorsView";
 import Login from "./components/Login"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,7 +31,8 @@ const App = () => {
               <Route path="/add" element={<Add />} />
               <Route path="/list" element={<List />} />
               <Route path="/orders" element={<Orders />} />
-              {role === "Admin" ? <Route path="/vendor-list" element={<VendorsProducts />}/> : ""}
+              <Route path= "/vendorsview" element={<VendorsView />} />
+              {role === "Admin" ? <Route path="/vendor-list" element={<VendorsList />}/> : ""}
             </Routes>
           </div>
         </div>
