@@ -6,10 +6,10 @@ import { AuthContext } from "../context/AuthContext";
 import { assets } from "../assets/admin_assets/assets";
 
 const StatusToggleButton = ({ item, updateStatus }) => {
-  const [isActive, setIsActive] = useState(item.status === "active"); // Initial status
+  const [isActive, setIsActive] = useState(item.status === true); // Initial status
 
   const handleToggle = async () => {
-    const newStatus = isActive ? "inactive" : "active"; // Toggle between active/inactive
+    const newStatus = isActive ? false : true; // Toggle between active/inactive
     setIsActive(!isActive);
     await updateStatus(item._id, newStatus); // Call the function to update the status in the backend
   };
@@ -32,10 +32,12 @@ const VendorsProducts = () => {
 
   const fetchList = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/product/list`);
+      const response = await axios.get(`${backendUrl}/api/user/vendor-details`,{headers:{token}});
+      console.log(response.data);
+      
 
       if (response.data.success) {
-        setList(response.data.products);
+        setList(response.data.vendorDetails);
       } else {
         toast.error(response.data.message);
       }
@@ -45,12 +47,11 @@ const VendorsProducts = () => {
     }
   };
 
-  const updateStatus = async (id, status) => {
+  const updateStatus = async (_id, status) => {
+    console.log(status);
+    
     try {
-      const response = await axios.post(
-        `${backendUrl}/api/product/update-status`,
-        { id, status },
-        { headers: { token } }
+      const response = await axios.post(`${backendUrl}/api/product/update-status`,{ _id, status },{ headers: { token } }
       );
 
       if (response.data.success) {
@@ -110,12 +111,11 @@ const VendorsProducts = () => {
             className="grid grid-cols-[3fr_3fr_3fr_3fr_1fr_2fr_2fr] items-center gap-2 py-1 px-2 border text-sm"
             key={index}
           >
-            <img className="w-12" src={item.image[0]} alt="" />
+            <img className="w-12" src={item.image} alt="" />
             <p>{item.name}</p>
-            <p>{item.category}</p>
+            <p>{item.company}</p>
             <p>
-              {currency}
-              {item.price}
+              {item.email}
             </p>
 
             {/* Status Toggle */}

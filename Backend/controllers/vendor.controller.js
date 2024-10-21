@@ -17,7 +17,7 @@ const getVendorDetails = async (req,res) =>{
 
       const vendorDetails = vendor.map((vendor) => {
         return {
-        id: vendor._id,
+        _id: vendor._id,
         name: vendor.name,
         surname:vendor.surname,
         email:vendor.email,
