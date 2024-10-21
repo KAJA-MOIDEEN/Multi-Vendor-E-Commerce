@@ -29,6 +29,7 @@ const StatusToggleButton = ({ item, updateStatus }) => {
 
 const VendorsList = () => {
   const [list, setList] = useState([]);
+  
   const { token } = useContext(AuthContext);
 
   const fetchList = async () => {
@@ -127,7 +128,7 @@ const VendorsList = () => {
             {/* View Icon */}
             
             <button className="flex justify-center cursor-pointer">
-              <Link to="/vendorsview">
+              <Link to= {"/vendorsView"}  state={{ item }}>
                 <img className="w-6 h-6" src={assets.view_icon} alt="View" />
               </Link>
             </button>
