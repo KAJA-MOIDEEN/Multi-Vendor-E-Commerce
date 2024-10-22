@@ -116,7 +116,7 @@ const getVendorOrders = async (req, res) => {
     const orders = await orderModel.find({ "items.ceratedBy": vendor.userId });
     
     // Log the orders fetched from the database
-    console.log("Orders found:", orders);
+    
 
     if (orders.length === 0) {
       return res.status(404).json({ message: "No orders found for this vendor" });
@@ -134,7 +134,32 @@ const getVendorOrders = async (req, res) => {
   }
 };
 
+// Find Vendors own products
+const adminGetVendorProducts = async(req,res)=>{
+  try {
+    const {userId} =  req.params;
+    
+    const  products = await productModel.find({ceratedBy:userId});
+    
+    if (!products) {
+      return res.status(404).json({ message: "No products found for this vendor" });
+    }
+
+    res.json({
+      success:true,
+      message:"Products Fetched Successfully",
+      products
+    })
+    
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message
+      });
+  }
+}
 
 
-export { getVendorDetails, vendorStatus ,vendorProducts ,getVendorOrders }
+export { getVendorDetails, vendorStatus ,vendorProducts ,getVendorOrders,adminGetVendorProducts }
 

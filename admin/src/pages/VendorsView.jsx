@@ -1,8 +1,12 @@
-import React, { useRef } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { backendUrl } from '../App';
+import { AuthContext } from '../context/AuthContext';
 
 const VendorsView = () => {
   const location = useLocation(); 
+  const {token} = useContext(AuthContext);
   const { item } = location.state || {}; 
   console.log (item)
 
@@ -25,6 +29,15 @@ const VendorsView = () => {
   const stateRef = useRef(null);
   const zipcodeRef = useRef(null);
   const countryRef = useRef(null);
+
+  const getVendorProduct = async()=>{
+  const response = await axios.get(backendUrl+`/api/vendor/vendor/${item.userId}`,{headers:{token}})
+    console.log(response.data)
+}
+  useEffect(()=>{
+    console.log("hit")
+    getVendorProduct()
+  },[item])
 
   // Function to handle form submission or any other action 
   const handleSubmit = () => { 
