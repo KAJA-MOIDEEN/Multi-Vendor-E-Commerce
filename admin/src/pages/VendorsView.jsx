@@ -1,10 +1,12 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { backendUrl } from '../App';
+import { backendUrl, currency } from '../App';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const VendorsView = () => {
+  const [list,setList] = useState([])
   const location = useLocation(); 
   const {token} = useContext(AuthContext);
   const { item } = location.state || {}; 
@@ -31,8 +33,37 @@ const VendorsView = () => {
   const countryRef = useRef(null);
 
   const getVendorProduct = async()=>{
-  const response = await axios.get(backendUrl+`/api/vendor/vendor/${item.userId}`,{headers:{token}})
-    console.log(response.data)
+    
+    try {
+      const response = await axios.get(backendUrl+`/api/vendor/vendor/${item.userId}`,{headers:{token}})
+      console.log(response.data)
+      setList(response.data.products);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      
+    }
+  
+    
+}
+
+const removeProduct = async (id) => {
+  try {
+    const response  = await axios.post(backendUrl + '/api/product/remove', {id} , {headers:{token}})
+
+    if (response.data.success){
+      toast.success(response.data.message)
+      await getVendorProduct();
+    } else{
+      toast.error(response.data.message)
+    }
+    
+  } catch (error) {
+    console.log(error);
+    toast.error(error.message)
+    
+  }
+
 }
   useEffect(()=>{
     console.log("hit")
@@ -81,7 +112,7 @@ const VendorsView = () => {
       </div>
 
       <div className='flex flex-col md:flex-row gap-3 mt-3'>
-        <InputField label="Aadhaar" type="number" placeholder="Aadhaar" defaultValue={item?.aadhaar || ''} ref={aadhaarRef} />
+        <InputField label="Aadhaar" type="text" placeholder="Aadhaar" defaultValue={item?.aadhaar || ''} ref={aadhaarRef} />
         <InputField label="Pan" type="text" placeholder="Pan" defaultValue={item?.pan || ''} ref={panRef} />
         <InputField label="GST" type="text" placeholder="GST" defaultValue={item?.GST || ''} ref={gstRef} />
       </div>
@@ -147,6 +178,24 @@ const VendorsView = () => {
           <b className='text-center'>Action</b>
         </div>
       </div>
+
+       {/* ------ Product  List ------- */}
+       {
+        list.map((item,index) => (
+          <div className='grid grid-cols-[ifr_3fr_1fr] md:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] items-center gap-2 py-1  px-2 border text-sm' key={index}>
+            <img className='w-12' src={item.image[0]} alt="" />
+            <p>{item.name}</p>
+            <p>{item.sellerCompany}</p>
+            <p>{item.category}</p>
+            <p>{currency}{item.price}</p>
+            <p onClick={()=>removeProduct(item._id)} className='text-right md:text-center cursor-pointer text-lg'>X</p>
+          </div>
+
+        ))
+
+
+      }
+
     </div>
   );
 };
