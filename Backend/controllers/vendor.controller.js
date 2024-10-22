@@ -159,7 +159,58 @@ const adminGetVendorProducts = async(req,res)=>{
       });
   }
 }
+const deleteVendor = async (req, res) => {
+  try {
+    const { _id } = req.body;
+
+    // Find and delete the vendor
+    const vendor = await adminModel.findByIdAndDelete(_id);
+    
+    // If vendor not found, return an error message
+    if (!vendor) {
+      return res.status(404).json({
+        success: false,
+        message: "Vendor not found"
+      });
+    }
+
+    // Find the user associated with the vendor
+    const user = await userModel.findById(vendor.userId);
+
+    // If user is not found, log and return an error message
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Associated user not found"
+      });
+    }
+
+    // Update the user's role back to 'user'
+    const update = await userModel.findByIdAndUpdate(
+      user._id,
+      { role: "user" },
+      { new: true }
+    );
+
+    // Respond with success
+    res.json({
+      success: true,
+      message: "Vendor deleted successfully",
+      vendor,
+      user,
+      update
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred: " + error.message
+    });
+  }
+};
 
 
-export { getVendorDetails, vendorStatus ,vendorProducts ,getVendorOrders,adminGetVendorProducts }
+
+export { getVendorDetails, vendorStatus ,vendorProducts ,getVendorOrders,adminGetVendorProducts,deleteVendor }
 

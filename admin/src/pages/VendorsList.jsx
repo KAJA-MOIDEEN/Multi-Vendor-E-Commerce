@@ -68,13 +68,9 @@ const VendorsList = () => {
     }
   };
 
-  const removeProduct = async (id) => {
+  const removeVendor = async (_id) => {
     try {
-      const response = await axios.post(
-        `${backendUrl}/api/product/remove`,
-        { id },
-        { headers: { token } }
-      );
+      const response = await axios.post(`${backendUrl}/api/vendor/deleteVendor`,{ _id },{ headers: { token } });
 
       if (response.data.success) {
         toast.success(response.data.message);
@@ -135,7 +131,7 @@ const VendorsList = () => {
 
             {/* Remove Button */}
             <button
-              onClick={() => removeProduct(item._id)}
+              onClick={() => removeVendor(item._id)}
               className="flex justify-center cursor-pointer text-lg"
             >
               X
