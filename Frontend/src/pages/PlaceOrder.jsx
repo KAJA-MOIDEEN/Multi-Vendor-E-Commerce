@@ -158,12 +158,12 @@ const PlaceOrder = () => {
         </div>
 
         <div className='flex gap-3'>
-          <input required ref={zipcodeRef} className='border border-gray-300 py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode' />
-          <input required ref={countryRef} className='border border-gray-300 py-1.5 px-3.5 w-full' type="text" placeholder='Country' />
+          <input required ref={zipcodeRef} className='border border-gray-300 py-1.5 px-3.5 w-full no-arrows' type="number" placeholder='Zipcode' />
+          <input required ref={countryRef} className='border border-gray-300 py-1.5 px-3.5 w-full ' type="text" placeholder='Country' />
         </div>
 
         <div className='flex gap-3'>
-          <input required ref={phoneRef} className='border border-gray-300 py-1.5 px-3.5 w-full' type="number" placeholder='Phone' />
+          <input required ref={phoneRef} className='border border-gray-300 py-1.5 px-3.5 w-full no-arrows' type="number" placeholder='Phone' />
         </div>
       </div>
 

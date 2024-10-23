@@ -80,7 +80,7 @@ const getUserCart =  async (req, res) => {
     try {
         const { userId }  = req.body
         const userData = await userModel.findById(userId)
-        let cartData = userData.cartData || {}
+        let cartData = userData?.cartData || {}
          res.json({ success: true, cartData })
         
     } catch (error) {

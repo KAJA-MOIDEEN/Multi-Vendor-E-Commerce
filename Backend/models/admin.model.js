@@ -13,7 +13,13 @@ const adminSchema = new mongoose.Schema(
       enum: ["Admin", "Vendor"], 
       default: "Vendor" 
     },
-    address: { type: String, required: true },
+    address: {
+      street: { type: String },
+      city: { type: String },
+      state: { type: String },
+      zipcode: { type: Number },
+      country: { type: String }
+     },
     phone: { type: String, required: true },
     company: {
       type: String,

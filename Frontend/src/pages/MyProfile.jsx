@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 const MyProfile = () => {
   const inputRef = useRef(null);  
-  const { token, backendUrl, userProfile ,role,setRole} = useContext(ShopContext);
+  const { token, backendUrl, userProfile ,role,setRole ,setUserProfile} = useContext(ShopContext);
   const [profileImage, setProfileImage] = useState(null); // Manage profile image
   const [isEditing, setIsEditing] = useState(false); // Control edit mode
 
@@ -23,6 +23,21 @@ const MyProfile = () => {
   const countryRef = useRef(null);
   const phoneRef = useRef(null);
 
+  const getUserProfile = async (token)=>{
+    try {
+      if(token){
+        const response = await axios.get(`${backendUrl}/api/user/user-profile`,{headers:{token}})
+        
+        if(response.data.success){
+          setUserProfile(response.data.user)
+        }
+       
+        
+      }
+    } catch (error) {
+      
+    }
+  }
   const handleImageClick = () => {
     if (isEditing) inputRef.current.click(); // Only allow image upload in edit mode
   };
@@ -91,6 +106,9 @@ const MyProfile = () => {
     }
   };
     
+  useEffect(()=>{
+    getUserProfile(token)
+  },[])
 
   useEffect(() => {
     fetchProfileData();

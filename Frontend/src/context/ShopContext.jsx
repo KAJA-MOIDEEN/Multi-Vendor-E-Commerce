@@ -196,6 +196,7 @@ const getUserProfile = async (token)=>{
     setCartItems,
     orders, setOrders,
     userProfile,
+    setUserProfile,
     role,setRole
   };
 

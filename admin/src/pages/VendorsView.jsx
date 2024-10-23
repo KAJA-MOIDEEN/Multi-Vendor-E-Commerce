@@ -208,7 +208,7 @@ const InputField = React.forwardRef(({ label, type = 'text', placeholder, defaul
       type={type}
       ref={ref}
       defaultValue={defaultValue}
-      className="w-full px-5 py-2 border border-gray-800"
+      className= {`w-full px-5 py-2 border border-gray-800 ${type==="number"  ? "no-arrows" : ""}`}
       placeholder={placeholder}
       disabled={disabled}
       required
