@@ -49,10 +49,12 @@ const getVendorDetails = async (req,res) =>{
   }
 }
 
-const vendorStatus = async(req,res)=>{
+const vendorStatus = async(req,res,next)=>{
   try {
     const { _id, status } = req.body;
+    
     const  vendor = await adminModel.findByIdAndUpdate(_id, { status }, { new: true });
+    
     
     if (!vendor) {
       return res.json({success:false,message:"Vendor Not Found"})
@@ -62,12 +64,13 @@ const vendorStatus = async(req,res)=>{
 
     if (status && user.role  === "user") {
      const status =  await userModel.findByIdAndUpdate(user._id, { role: "vendor" }, { new:true})
+    
     }
     else if(!status && user.role  === "vendor") {
       const status =  await userModel.findByIdAndUpdate(user._id, { role: "user" }, {new:true})
       }
       res.json({success:true,message:"Vendor Status Updated Successfully",vendor});
-    
+      next();
 
   } catch (error) {
     console.log(error);
