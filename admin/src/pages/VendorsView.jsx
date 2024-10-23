@@ -98,6 +98,7 @@ const removeProduct = async (id) => {
   }; 
 
   return ( 
+    <>
     <div className='px-4 md:px-28'> 
       <div className='flex flex-col md:flex-row gap-3'> 
         <InputField label="Name" type="text" placeholder="Name" defaultValue={item?.name || ''} ref={nameRef} /> 
@@ -163,24 +164,26 @@ const removeProduct = async (id) => {
     />
   </div>
 </div>
-      <button onClick={handleSubmit} className="mt-5 px-4 py-2 bg-blue-500 text-white">
+</div>
+      {/* <button onClick={handleSubmit} className="mt-5 px-4 py-2 bg-blue-500 text-white">
         Submit
-      </button>
+      </button> */}
 
-      {/* Vendor Products List */}
-      <p className='mb-2 mt-10'>All Products List</p>
-      <div className='flex flex-col gap-2'>
-        <div className='hidden md:grid grid-cols-[3fr_3fr_3fr_3fr_3fr] items-center py-1 px-2 border bg-gray-100 text-sm'>
-          <b>Vendor Image</b>
-          <b>Vendor Name</b>
-          <b>Category</b>
-          <b>Price</b>
-          <b className='text-center'>Action</b>
-        </div>
+<>
+    <p className='mb-2'>All Products List</p>
+    <div className='flex flex-col gap-2 '>
+      {/* ------List Table Title------- */}
+      <div className='hidden md:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm'>
+        <b>Image</b>
+        <b>Name</b>
+        <b>seller</b>
+        <b>Category</b>
+        <b>Price</b>
+        <b className='text-center'>Action</b>
       </div>
 
-       {/* ------ Product  List ------- */}
-       {
+      {/* ------ Product  List ------- */}
+      {
         list.map((item,index) => (
           <div className='grid grid-cols-[ifr_3fr_1fr] md:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] items-center gap-2 py-1  px-2 border text-sm' key={index}>
             <img className='w-12' src={item.image[0]} alt="" />
@@ -188,7 +191,7 @@ const removeProduct = async (id) => {
             <p>{item.sellerCompany}</p>
             <p>{item.category}</p>
             <p>{currency}{item.price}</p>
-            <p onClick={()=>removeProduct(item._id)} className='text-right md:text-center cursor-pointer text-lg'>X</p>
+            <p onClick={()=>removeProduct(item._id)} className='text-right md:text-center cursor-pointer text-lg hover:text-red-600'>X</p>
           </div>
 
         ))
@@ -197,6 +200,11 @@ const removeProduct = async (id) => {
       }
 
     </div>
+
+    </>
+
+    
+    </>
   );
 };
 

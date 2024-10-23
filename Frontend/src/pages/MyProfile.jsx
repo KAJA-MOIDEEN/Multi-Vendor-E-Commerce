@@ -5,6 +5,7 @@ import { ShopContext } from '@/context/ShopContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+
 const MyProfile = () => {
   const inputRef = useRef(null);  
   const { token, backendUrl, userProfile ,role,setRole ,setUserProfile} = useContext(ShopContext);
@@ -23,28 +24,31 @@ const MyProfile = () => {
   const countryRef = useRef(null);
   const phoneRef = useRef(null);
 
-  const getUserProfile = async (token)=>{
+  const getUserProfile = async (token) => {
     try {
-      if(token){
-        const response = await axios.get(`${backendUrl}/api/user/user-profile`,{headers:{token}})
-        
-        if(response.data.success){
-          setUserProfile(response.data.user)
+      if (token) {
+        const response = await axios.get(`${backendUrl}/api/user/user-profile`, { headers: { token } });
+        if (response.data.success) {
+          setUserProfile(response.data.user);
         }
-       
-        
       }
     } catch (error) {
-      
+      // Handle error
     }
-  }
+  };
+
   const handleImageClick = () => {
-    if (isEditing) inputRef.current.click(); // Only allow image upload in edit mode
+    if (isEditing) {
+      inputRef.current.click(); // Only allow image upload in edit mode
+    }
   };
 
   const handleImageChange = (event) => {
+    event.preventDefault(); // Prevent automatic form submission
     const file = event.target.files[0];
-    setProfileImage(file); // Set the image as file object
+    if (file) {
+      setProfileImage(file); // Set the image as a file object
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -105,14 +109,14 @@ const MyProfile = () => {
       console.log(error.message);
     }
   };
-    
-  useEffect(()=>{
-    getUserProfile(token)
-  },[])
+
+  useEffect(() => {
+    getUserProfile(token);
+  }, []);
 
   useEffect(() => {
     fetchProfileData();
-    setRole(userProfile.role)
+    setRole(userProfile.role);
   }, [userProfile]);
 
   return (
@@ -141,13 +145,13 @@ const MyProfile = () => {
 
         {/* Profile Form */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full">
-          <InputField  label="First Name" ref={firstNameRef} placeholder="First Name" disabled={!isEditing} />
-          <InputField  label="Last Name" ref={lastNameRef} placeholder="Last Name" disabled={!isEditing} />
+          <InputField label="First Name" ref={firstNameRef} placeholder="First Name" disabled={!isEditing} />
+          <InputField label="Last Name" ref={lastNameRef} placeholder="Last Name" disabled={!isEditing} />
         </div>
 
-        <InputField  label="D.O.B" ref={dobRef} type="date" disabled={!isEditing} />
-        <InputField  label="Email" ref={emailRef} type="email" placeholder="Example: xyz@gmail.com" disabled={!isEditing} />
-        <InputField  label="Street" ref={streetRef} type="text" placeholder="Street" disabled={!isEditing} />
+        <InputField label="D.O.B" ref={dobRef} type="date" disabled={!isEditing} />
+        <InputField label="Email" ref={emailRef} type="email" placeholder="Example: xyz@gmail.com" disabled={!isEditing} />
+        <InputField label="Street" ref={streetRef} type="text" placeholder="Street" disabled={!isEditing} />
 
         <div className="flex gap-3">
           <InputField label="City" ref={cityRef} type="text" placeholder="City" disabled={!isEditing} />
@@ -164,7 +168,7 @@ const MyProfile = () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row sm:space-x-5 w-full justify-center">
           <ActionButton label={isEditing ? "Save" : "Edit"} />
-          <Seller role={role} label = {role === "user" ? "Become a Celler" : "Seller Dashboard"}/>
+          <Seller role={role} label={role === "user" ? "Become a Seller" : "Seller Dashboard"} />
         </div>
       </form>
     </div>
@@ -185,22 +189,22 @@ const InputField = React.forwardRef(({ label, type = 'text', placeholder, disabl
   </div>
 ));
 
-const ActionButton = ({ label}) => (
+const ActionButton = ({ label }) => (
   <button type="submit" className="bg-black text-white font-light px-8 py-2 mt-4">
     {label}
   </button>
 );
 
-const Seller = ({ label , role })=>{
-  return (
-    role === "user" ?(
+const Seller = ({ label, role }) => {
+  return role === "user" ? (
     <Link to={"/seller-register"} className="bg-black text-white font-light px-8 py-2 mt-4">
-    { label }
-  </Link>) : 
-  <Link to={"http://localhost:5174/login"} className="bg-black text-white font-light px-8 py-2 mt-4">
-  { label }
-</Link>
-  )
-}
+      {label}
+    </Link>
+  ) : (
+    <Link to={"http://localhost:5174/login"} className="bg-black text-white font-light px-8 py-2 mt-4">
+      {label}
+    </Link>
+  );
+};
 
 export default MyProfile;
