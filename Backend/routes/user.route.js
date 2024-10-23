@@ -10,6 +10,7 @@ import {
 import authUser from "../middleware/auth.js";
 import { getVendorDetails, vendorStatus } from "../controllers/vendor.controller.js";
 import { adminLogin, adminSignup } from "../controllers/admin.controller.js";
+import sendMail from "../middleware/mailSend.js";
 
 const userRouter = express.Router();
 
@@ -25,7 +26,7 @@ userRouter.post("/admin-login", adminLogin);
 
 //vendor  details
 userRouter.get("/vendor-details",adminAuth,getVendorDetails)
-userRouter.post('/vendor-status',adminAuth,vendorStatus)
+userRouter.post('/vendor-status',adminAuth,vendorStatus,sendMail)
 
 
 
