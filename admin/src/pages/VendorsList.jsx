@@ -86,7 +86,7 @@ const VendorsList = () => {
             className="grid grid-cols-[2fr_2fr_3fr_3fr_1fr_2fr_2fr] items-center py-1 px-2 border text-sm"
             key={item._id} // Use item._id for a unique key
           >
-            <img className="w-12" src={item.image} alt="" />
+            <img className="w-12 h-12" src={item.image} alt="" />
             <p>{item.name}</p>
             <p>{item.company}</p>
             <p>{item.email}</p>
@@ -118,7 +118,7 @@ const VendorsList = () => {
             {/* Remove Button */}
             <button
               onClick={() => removeVendor(item._id)}
-              className="flex justify-center cursor-pointer text-lg"
+              className="flex justify-center cursor-pointer text-lg hover:text-red-600"
             >
               X
             </button>
