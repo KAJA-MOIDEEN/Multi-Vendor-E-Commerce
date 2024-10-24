@@ -76,7 +76,7 @@ const sendMail = async(req, res) => {
                         Your account has been deactivated. If you need further assistance, please contact our support.
                     </p>
                     <div style="text-align: center;">
-                        <a href="mailto:titusdjerwin@gmail.com" style="background-color: #f44336; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">
+                        <a href="mailto:${process.env.NODEMAILER_EMAIL}" style="background-color: #f44336; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">
                             Contact Support
                         </a>
                     </div>
