@@ -81,7 +81,7 @@ const registerUser = async (req, res) => {
 const userUpdate = async (req, res) => {
     const { userId, name, surname, email, address, phone, dob } = req.body;
     const img = req.file; // Image provided for update
-  
+  console.log("funvtion")
     try {
       // Find the user by ID
       const user = await userModel.findById(userId);
@@ -115,6 +115,7 @@ const userUpdate = async (req, res) => {
       // If a new image is provided, delete the old one and upload the new one
       if (img) {
         await deleteProfileImage(user); // Delete old image from Cloudinary
+        console.log("called")
         const imageUrl = await addImgToCloudinary([img]); // Upload new image
         if (imageUrl && imageUrl.length > 0) {
           user.image = imageUrl[0]; // Assign new image URL to the user
@@ -130,7 +131,7 @@ const userUpdate = async (req, res) => {
       });
   
     } catch (error) {
-      console.error(error.message);
+      console.error(error.message+"hiiiii");
       return res.status(500).json({
         success: false,
         message: "Error updating user profile",
@@ -143,20 +144,22 @@ const userUpdate = async (req, res) => {
 const getUserDetails = async(req,res)=>{
     
     const { userId } = req.body
+    console.log(userId,"id")
 
     try {
         const userData = await userModel.findById(userId);
 
         if (userData) {
+     
             const user = {
                 fname:userData.name,
-                surname:userData.surname,
-                email:userData.email,
-                phone:userData.phone,
-                dob:userData.dob.toISOString().split('T')[0],
-                address:userData.address,
-                image:userData.image,
-                role:userData.role
+                surname:userData.surname?userData.surname:"",
+                email:userData.email?userData.email:"",
+                phone:userData.phone?userData.phone:"",
+                dob:userData.dob?userData.dob.toISOString().split('T')[0]:"",
+                address:userData.address?userData.address:userData.address,
+                image:userData.image||"",
+                role:userData.role||""
             }
 
             res.status(200).json({ success: true, user });
@@ -164,7 +167,7 @@ const getUserDetails = async(req,res)=>{
             }
 
     } catch (error) {
-        console.log(error.message);
+        console.log(error.message+"gett");
         res.json({
             success: false,
             message: "Error getting user details",

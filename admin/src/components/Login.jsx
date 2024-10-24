@@ -73,7 +73,6 @@ const Login = () => {
 
       <div className='w-full flex justify-between text-sm mt-[-8px]'>
         <p className='cursor-pointer'>Forgot Your Password</p>
-        <p className='cursor-pointer'>Create Vendor Account</p>
       </div>
 
       <button className='bg-black text-white font-light px-8 py-2 mt-4'>

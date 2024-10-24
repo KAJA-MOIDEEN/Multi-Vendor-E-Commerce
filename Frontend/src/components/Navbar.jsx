@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 const Navbar = () => { 
   const [visible, setVisible] = useState(false); 
-  const { setShowSearch, getCartCount, setToken, token ,navigate } = useContext(ShopContext); 
+  const { setShowSearch, getCartCount, setToken, token ,navigate,setUserProfile } = useContext(ShopContext); 
 
   const handleToggle = (value) => {
     token
@@ -18,26 +18,35 @@ const Navbar = () => {
       : value === "MyProfile"
       ? toast.error("Please login to view your profile")
       : value === "Orders"
-      ? toast.error("Please login to view your orders")
+      ? (toast.error("Please login to view your orders"),navigate("/login"))
       : toast.error("Please login to continue");
   };
   
 
   const handleLogout = () => {
     if (token) {
-      setToken("");
+      
       localStorage.removeItem("token");
+      setToken("");
+      console.log(token,"token",localStorage.getItem("token"))
       toast.success("Logout successfully");
+      setUserProfile({})
       navigate("/login")
     } else {
       toast.error("Please login to view your orders");
+      console.log("here")
       navigate("/login")
       
     }
   };
   
+useEffect(()=>{
+console.log(token,"seeking")
+},[token])
+
   useEffect(() => {
     setToken(localStorage.getItem("token"))
+    console.log("am here")
   }, []);
 
   return (
@@ -79,7 +88,11 @@ const Navbar = () => {
 
           {/* Profile & Cart Section */}
           <div className="group relative">
-            <Link to="/login"><img className="w-5 cursor-pointer" src={assets.profile_icon} alt="Profile Icon" /></Link>
+            <img onClick={()=>{
+              if(!token){
+                navigate("/login")
+              }
+            }} className="w-5 cursor-pointer" src={assets.profile_icon} alt="Profile Icon" />
             <div className="group-hover:block hidden absolute dropdown-menu right-0 p-4">
               <div className="flex flex-col gap-2 w-36 py-2 px-9 bg-slate-100 text-gray-500 rounded">
                 <button onClick={()=>handleToggle("MyProfile")}><p className="cursor-pointer hover:text-black text-left ">My Profile</p></button>

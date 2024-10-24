@@ -164,11 +164,16 @@ const getUserProfile = async (token)=>{
   useEffect(()=>{
     const token = localStorage.getItem("token")
     if(token){
+      console.log(token,"contex")
       setToken(token)
       getUserCart(token)
       getUserProfile(token);
       }
    },[])
+
+   useEffect(()=>{
+console.log(token,"context")
+   },[token])
 
   
   

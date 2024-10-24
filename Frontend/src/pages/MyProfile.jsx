@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const MyProfile = () => {
   const inputRef = useRef(null);  
   const { token, backendUrl, userProfile ,role,setRole ,setUserProfile} = useContext(ShopContext);
-  const [profileImage, setProfileImage] = useState(null); // Manage profile image
+  const [profileImage, setProfileImage] = useState(''); // Manage profile image
   const [isEditing, setIsEditing] = useState(false); // Control edit mode
 
   // Creating refs for form fields
@@ -30,6 +30,8 @@ const MyProfile = () => {
         const response = await axios.get(`${backendUrl}/api/user/user-profile`, { headers: { token } });
         if (response.data.success) {
           setUserProfile(response.data.user);
+      
+          
         }
       }
     } catch (error) {
@@ -103,6 +105,7 @@ const MyProfile = () => {
 
       // Set profile image URL if it exists
       if (userProfile.image) {
+        console.log(userProfile.image)
         setProfileImage(userProfile.image); // Populate profile image URL
       }
     } catch (error) {
@@ -115,8 +118,11 @@ const MyProfile = () => {
   }, []);
 
   useEffect(() => {
-    fetchProfileData();
-    setRole(userProfile.role);
+    if(Object.keys(userProfile).length>0){
+      fetchProfileData();
+      setRole(userProfile.role);
+    }
+    
   }, [userProfile]);
 
   return (
