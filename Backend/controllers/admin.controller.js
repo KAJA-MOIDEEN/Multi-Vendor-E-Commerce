@@ -2,9 +2,10 @@ import adminModel from "../models/admin.model.js";
 import  bcrypt from "bcrypt";
 import userModel from "../models/user.model.js";
 import { createToken } from "./user.controller.js";
+import { sendMailForRegistration } from "../middleware/mailSend.js";
 
 // Route for user signUp
-const adminSignup = async (req,res)=>{
+const adminSignup = async (req,res,next)=>{
     console.log(req.body); // Log the entire body
       try {
         
@@ -25,6 +26,7 @@ const adminSignup = async (req,res)=>{
               message: "Vendor Already Exist",
               waiting_MSG:"Please Wait For Admin verification",
             })
+            
           }
   
           const data  = {
@@ -47,6 +49,7 @@ const adminSignup = async (req,res)=>{
             console.log(admindata);
           
             res.json({message:"Admin created successfully", success:true })
+            sendMailForRegistration(admindata)
             
   
       } catch (error) {

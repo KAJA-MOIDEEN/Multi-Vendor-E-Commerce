@@ -10,7 +10,7 @@ import {
 import authUser from "../middleware/auth.js";
 import { getVendorDetails, vendorStatus } from "../controllers/vendor.controller.js";
 import { adminLogin, adminSignup } from "../controllers/admin.controller.js";
-import sendMail from "../middleware/mailSend.js";
+import {sendMail} from "../middleware/mailSend.js";
 
 const userRouter = express.Router();
 

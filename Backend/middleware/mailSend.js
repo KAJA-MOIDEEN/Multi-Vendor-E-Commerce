@@ -14,6 +14,30 @@ const transporter = nodemailer.createTransport(
     }
 )
 
+export const sendMailForRegistration = async(adminData)=>{
+    console.log("From Registe");
+    try {
+        await transporter.sendMail({
+            to: adminData.email,
+            subject: 'Request for registration as Vendor',
+            html: `<h1>Request for user registration is done successfully</h1>
+                    <p>Dear ${adminData.name},</p>
+                    <p>Your request to register as a vendor has been received and processed successfully.</p>
+                    <p>Thank you,</p>
+                    <p>Your Company</p>`
+        })
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+   
+
+    
+
+}
+
 const sendMail = async(req, res) => {
     const { _id, status } = req.body;
 
@@ -78,4 +102,4 @@ const sendMail = async(req, res) => {
     }
 };
 
-export default sendMail
+export {sendMail} 
