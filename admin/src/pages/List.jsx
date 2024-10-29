@@ -113,7 +113,7 @@ const List = () => {
             <p className="truncate font-medium text-gray-800">{currency}{item.price}</p>
             <button
               onClick={() => handleRemoveClick(item._id)}
-              className="text-red-500 hover:text-red-700 transition text-center md:text-right"
+              className="text-red-500 hover:text-red-700 transition text-center text-lg"
             >
               X
             </button>
