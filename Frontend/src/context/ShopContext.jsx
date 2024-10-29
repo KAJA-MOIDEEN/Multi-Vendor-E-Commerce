@@ -23,6 +23,10 @@ const ShopContextProvider = (props) => {
 
 
   const addToCart = async (itemId, size) => {
+    if (!token) {
+      toast.error("unauthorized login again")
+      return
+    }
     if(!size){
       toast.error("Selecet product size")
       return;

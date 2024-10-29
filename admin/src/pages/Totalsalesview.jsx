@@ -39,7 +39,7 @@ const Totalsalesview = () => {
         </div>
 
         {/* Sales List */}
-        {[].map((item, index) => (
+        {[]?.map((item, index) => (
           <div
             key={index}
             className="grid grid-cols-2 sm:grid-cols-4 items-center py-2 px-3 border-b hover:bg-gray-50 text-sm text-gray-700 rounded-md shadow-sm transition duration-200"
