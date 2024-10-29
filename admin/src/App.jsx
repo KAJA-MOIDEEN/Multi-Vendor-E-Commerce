@@ -11,6 +11,7 @@ import Login from "./components/Login"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from "./context/AuthContext";
+import Totalsalesview from "./pages/Totalsalesview";
 
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -32,6 +33,7 @@ const App = () => {
               <Route path="/list" element={<List />} />
               <Route path="/orders" element={<Orders />} />
               <Route path= "/vendorsview" element={<VendorsView />} />
+              <Route path="/totalsalesview" element={<Totalsalesview/>} />
               {role === "Admin" ? <Route path="/vendor-list" element={<VendorsList />}/> : ""}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

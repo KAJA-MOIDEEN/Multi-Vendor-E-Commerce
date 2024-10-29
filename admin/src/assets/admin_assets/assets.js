@@ -6,6 +6,7 @@ import upload_area from './upload_area.png'
 import parcel_icon from './parcel_icon.svg'
 import profile_icon from './profile_icon.png'
 import view_icon from './view.png'
+import search_icon from './searchicon.png'
 
 export const assets = {
     Admin_logo,
@@ -15,6 +16,7 @@ export const assets = {
     upload_area,
     parcel_icon,
     profile_icon,
-    view_icon
+    view_icon,
+    search_icon
 }
 
