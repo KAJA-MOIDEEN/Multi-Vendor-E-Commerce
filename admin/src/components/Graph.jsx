@@ -4,7 +4,7 @@ import { Switch } from "@material-tailwind/react";
 import { AuthContext } from "../context/AuthContext";
 
 const Graph = () => {
-    const { currency  } = useContext(AuthContext)
+    const { currency ,role  } = useContext(AuthContext)
     const [count, setCount] = useState(0);
     const targetValue = 200;  
     const duration = 1000;  
@@ -47,8 +47,9 @@ const Graph = () => {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-4">
-                {/* Today's Sales Status */}
-                <section className="h-auto w-full md:w-2/4 border-2 rounded-lg p-4 shadow-lg">
+
+                {/* Today's Sales Status for Vendor */}
+                {role==="Vendor"?<section className="h-auto w-full md:w-2/4 border-2 rounded-lg p-4 shadow-lg">
                     <div className="flex justify-between mb-4">
                         <p className="font-semibold text-sm sm:text-xs md:text-lg">Today's Sales Status</p>
                         {/* more info component */}
@@ -78,10 +79,40 @@ const Graph = () => {
                         <p className="font-semibold text-sm sm:text-xs md:text-lg">Total Sales</p>
                         <p className="text-sm sm:text-xs md:text-lg">1234</p>
                     </div>
-                </section>
-
+                </section>:""}
+                
+                {/* Today's Total Sales for admin Status */}
+                {role==="Admin"?<section className="h-auto w-full md:w-2/4 border-2 rounded-lg p-4 shadow-lg">
+                    <div className="flex justify-between mb-4">
+                        <p className="font-semibold text-sm sm:text-xs md:text-lg">Today's Sales Status</p>
+                        {/* more info component */}
+                        <More to={"/totalsalesview"}/>
+                    </div>
+                    <div className="items-center h-64 w-full overflow-y-auto scroll-smooth p-4 bg-gray-100 scrollbar-hide">
+                        <table className="w-full text-center">
+                            <thead>
+                                <tr>
+                                    <th className="p-2 text-sm sm:text-sm">Vendor Name</th>
+                                    <th className="p-2 text-sm sm:text-sm">Sales</th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white border-b-2">
+                                {Array.from({ length: 10 }).map((_, index) => (
+                                    <tr key={index} className="border-b-2">
+                                        <td className="p-2 text-sm sm:text-sm">Cotton Shirt</td>
+                                        <td className="p-2 text-sm sm:text-sm">230</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="flex justify-between mt-4">
+                        <p className="font-semibold text-sm sm:text-xs md:text-lg">Total Sales</p>
+                        <p className="text-sm sm:text-xs md:text-lg">1234</p>
+                    </div>
+                </section>:""}
                 {/* Vendor Status */}
-                <section className="h-auto w-full md:w-2/4 border-2 rounded-lg p-4 shadow-lg">
+                {role==="Admin"?<section className="h-auto w-full md:w-2/4 border-2 rounded-lg p-4 shadow-lg">
                     <div className="flex justify-between mb-4">
                         <p className="font-semibold text-sm sm:text-xs md:text-lg">Vendor Status</p>
                         <More to={"/vendor-list"}/>
@@ -105,7 +136,7 @@ const Graph = () => {
                             </div>
                         ))}
                     </div>
-                </section>
+                </section>:""}
             </div>
         </div>
     );
