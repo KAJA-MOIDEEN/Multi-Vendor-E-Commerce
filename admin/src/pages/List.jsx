@@ -126,7 +126,7 @@ const List = () => {
         isOpen={isModalOpen}
         onConfirm={handleConfirmRemove}
         onCancel={() => setIsModalOpen(false)}
-        message="Are you sure you want to remove this vendor?"
+        message="Are you sure you want to remove this product?"
       />
     </>
   );
