@@ -124,7 +124,7 @@ const Graph = () => {
                             <p>Status</p>
                         </div>
                         {[...Array(10)].map((_, i) => (
-                            <div key={i} className="flex justify-between items-center mt-1">
+                            <div key={i} className="flex justify-between items-center mt-1 p-1">
                                 <img className="rounded-full w-6 sm:w-10" src={assets.order_icon} alt="Admin Logo" />
                                 <p className="text-sm sm:text-xs md:text-lg">Vendor Name</p>
                                 <Switch
