@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
 import Add from "./pages/Add";
 import List from "./pages/List";
 import Orders from "./pages/Orders";
@@ -30,6 +31,7 @@ const App = () => {
           <div className="w-[75%] mx-auto ml-[max(4vw,25px)] my-8 text-gray-600 text-base">
             <Routes>
               <Route path="/" element={<Add />} />
+              <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/list" element={<List />} />
               <Route path="/orders" element={<Orders />} />
               <Route path= "/vendorsview" element={<VendorsView />} />
