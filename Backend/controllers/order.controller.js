@@ -75,89 +75,124 @@ const placeOrder = async (req, res) => {
   
 
 //Placing order using stripe
-const placeOrderStripe = async (req, res)=>{
-
+const placeOrderStripe = async (req, res) => {
   try {
+    const { userId, items, address } = req.body;
+    const { origin } = req.headers;
 
+    const currency = 'usd'; // Define your currency
+    const delivery_charges = 10; // Define delivery charges
 
-    const { userId, items, amount, address } = req.body;
+    // Group items by vendor
+    const itemsByVendor = items.reduce((acc, item) => {
+      const { ceratedBy } = item; 
+      if (!acc[ceratedBy]) acc[ceratedBy] = []; 
+      acc[ceratedBy].push(item); 
+      return acc;
+    }, {});
 
-    const {origin} = req.headers;
-
-    const orderData = {
-      userId,
-      items,
-      amount,
-      address,
-      paymentMethod: 'Stripe',
-      payment: false,
-      date: Date.now(),
-    };
-
-    const newOrder = new orderModel(orderData);
-    await newOrder.save();
-
-    const line_items = items.map((item) => ({
-      price_data: {
-        currency: currency,
-        product_data: {
-          name: item.name
+    // Create a single array for line items for Stripe
+    const line_items = [];
+    
+    // Save orders for each vendor
+    const orderPromises = Object.entries(itemsByVendor).map(async ([vendorId, vendorItems]) => {
+      const vendorAmount = vendorItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      
+      // Create line items for the vendor
+      const vendorLineItems = vendorItems.map((item) => ({
+        price_data: {
+          currency: currency,
+          product_data: {
+            name: item.name,
+          },
+          unit_amount: item.price * 100, // Convert to cents
         },
-        unit_amount: item.price * 100
-      },
-      quantity: item.quantity
-    }))
+        quantity: item.quantity,
+      }));
 
-    line_items.push({
-      price_data: {
-        currency: currency,
-        product_data: {
-          name: "Delivery Charges"
+      // Add delivery charges to the vendor line items
+      vendorLineItems.push({
+        price_data: {
+          currency: currency,
+          product_data: {
+            name: "Delivery Charges",
+          },
+          unit_amount: delivery_charges * 100, // Convert to cents
         },
-        unit_amount: delivery_charges * 100
-      },
-      quantity: 1
-    })
+        quantity: 1,
+      });
 
-    const sessions = await stripe.checkout.sessions.create({
-      success_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
-      cancel_url: `${origin}/verify?success=false&orderId=${newOrder._id}`,
+      // Save the order in the database for this vendor
+      const newOrder = new orderModel({
+        userId,
+        items: vendorItems,
+        amount: vendorAmount + delivery_charges, // Total amount for this vendor
+        address,
+        paymentMethod: 'Stripe',
+        payment: false,
+        date: Date.now(),
+        ceratedBy: vendorId,
+      });
+      await newOrder.save();
+
+      // Add vendor line items to the main line items
+      line_items.push(...vendorLineItems);
+
+      return newOrder; // return the order object if needed
+    });
+
+    // Wait for all vendor orders to be saved
+    await Promise.all(orderPromises); 
+
+    // Create a single Stripe checkout session
+    const session = await stripe.checkout.sessions.create({
+      success_url: `${origin}/verify?success=true`,
+      cancel_url: `${origin}/verify?success=false`,
       line_items,
-      mode: "payment"
-    })
+      mode: "payment",
+    });
 
+    // Respond with session URL
     res.json({
-      success: true,session_url: sessions.url
-    })
+      success: true,
+      session_url: session.url,
+    });
 
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
-  }
+    console.error('Error creating Stripe session:', error); 
+    res.status(500).json({ success: false, message: 'Failed to create Stripe session. Please try again later.' }); 
+  } 
+};
 
-}
 
-//Verify Stripe
-const verifyStripe = async(req, res)=>{
-  const {orderId, success, userId} = req.body
+// Verify Stripe Payment
+const verifyStripe = async (req, res) => {
+  const { success, userId } = req.body; // We no longer need orderId here
 
   try {
-    if(success === "true"){
-      await orderModel.findByIdAndUpdate(orderId, {payment: true})
-      await userModel.findByIdAndUpdate(userId, {cartData: {}})
-      res.json({
-        success: true
-      })
+    if (success === "true") {
+      // Find all orders that belong to the user and mark them as paid
+      const orders = await orderModel.find({ userId, payment: false });
+
+      for (const order of orders) {
+        await orderModel.findByIdAndUpdate(order._id, { payment: true });
+      }
+      
+      // Clear the user's cart
+      await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
+      res.json({ success: true });
+    } else {
+      // Handle payment failure, you can choose to delete the orders or mark them as unpaid
+      await orderModel.updateMany({ userId, payment: false }, { $set: { payment: false } }); // Mark orders as unpaid
+      res.json({ success: false, message: "Payment Failed" });
     }
-    else{
-      await orderModel.findByIdAndDelete(orderId)
-      res.json({success: false, message: error.message})
-    }
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
-  }
-}
+  } catch (error) { 
+    console.log(error); 
+    res.json({ success: false, message: error.message }); 
+  } 
+};
+
 
 //Placing order using razorpay
 const placeOrderRazorpay = async (req, res) =>{
