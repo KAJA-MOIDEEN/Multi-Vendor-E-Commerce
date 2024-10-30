@@ -3,7 +3,7 @@ import React from 'react'
 
 const Hero = () => {
   return (
-    <div className='flex flex-col items-center sm:flex-row border-gray-400'>
+    <div className='flex flex-col items-center sm:flex-row border-gray-400 bg-secondary-400'>
         {/* hero left section */}
         <div className='w-full sm:w-1/2 flex item-center justify-center py-10 sm:py-0'>
             <div className='text-[#414141]'>

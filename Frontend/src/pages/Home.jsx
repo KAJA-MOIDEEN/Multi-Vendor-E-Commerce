@@ -4,6 +4,7 @@ import NewsLetterBox from '@/components/NewsLetterBox'
 import OurPolicy from '@/components/OurPolicy'
 import BestSeller from '@/components/BestSeller'
 import React from 'react'
+import OfferBanner from '@/components/OfferBanner'
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
         <Hero/>
         <LatestCollection/>
         <BestSeller/>
+        <OfferBanner />
         <OurPolicy/>
         <NewsLetterBox/>
     </div>

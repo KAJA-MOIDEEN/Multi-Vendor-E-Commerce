@@ -14,6 +14,12 @@ export default {
 			"1300px":"1300px",
 			"400px":"400px"
 		},
+		colors:{
+			"secondary-100": "#F2EDE9",
+			"secondary-200": "#161616",
+			"secondary-300": "#88543C",
+			"secondary-400": "#F2EDE9"
+		}
 	  },
 	},
 	plugins: [],
