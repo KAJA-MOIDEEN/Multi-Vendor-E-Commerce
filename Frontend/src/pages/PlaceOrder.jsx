@@ -53,7 +53,8 @@ const PlaceOrder = () => {
           phone: phoneRef.current.value,
         },
         items: orderItem,
-        amount: getCartAmount() + delivery_fee
+        amount: getCartAmount() + delivery_fee,
+        deliveryCharge:delivery_fee,
       }
 
       const initPay = (order)=>{

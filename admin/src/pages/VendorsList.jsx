@@ -9,24 +9,11 @@ import { assets } from "../assets/admin_assets/assets";
 import { Switch } from "@material-tailwind/react"; 
 
 const VendorsList = () => {
-  const [list, setList] = useState([]);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [vendorToRemove, setVendorToRemove] = useState(null);
-  const { token } = useContext(AuthContext);
+  const { token , fetchList , list, role} = useContext(AuthContext);
 
-  const fetchList = async () => {
-    try {
-      const response = await axios.get(`${backendUrl}/api/user/vendor-details`, { headers: { token } });
-      if (response.data.success) {
-        setList(response.data.vendorDetails);
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.message);
-    }
-  };
 
   const updateStatus = async (_id, status) => {
     try {
@@ -70,7 +57,7 @@ const VendorsList = () => {
   };
 
   useEffect(() => {
-    fetchList();
+    role === "Admin" ? fetchList() : "" 
   }, []);
 
   return (

@@ -9,7 +9,7 @@ const vendorRouter = express.Router();
 // Vendor Features
 vendorRouter.get("/productGet",aggreProduct);
 vendorRouter.get("/vendor/:userId",adminAuth,adminGetVendorProducts);
-vendorRouter.get("/vensorProduct",adminAuth,vendorProducts);
+vendorRouter.get("/vendorProduct",adminAuth,vendorProducts);
 vendorRouter.get("/vendorOrders",adminAuth,getVendorOrders);
 vendorRouter.post("/deleteVendor",adminAuth,deleteVendor)
 

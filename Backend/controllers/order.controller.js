@@ -15,38 +15,63 @@ const razorpayInstance = new razorpay({
 })
 
 //Placing order 
-const placeOrder = async (req, res) => {
-    try {
-      const { userId, items, amount, address } = req.body;
-      // console.log(userId, items, amount, address);
-  
+const placeOrder = async (req, res) => { 
+  try { 
+    const { userId, items, address , deliveryCharge } = req.body;
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({ success: false, message: "No items to place an order" });
+    }
+
+    // const deliveryCharge = 10; // Fixed delivery charge per vendor
+    let totalAmount = 0; // Initialize total amount for all orders
+
+    // Group items by createdBy (vendor)
+    const itemsByVendor = items.reduce((acc, item) => {
+      const { ceratedBy } = item;
+      if (!acc[ceratedBy]) acc[ceratedBy] = [];
+      acc[ceratedBy].push(item);
+      return acc;
+    }, {});
+
+    // Create an order for each vendor
+    const orderPromises = Object.entries(itemsByVendor).map(async ([ceratedBy, vendorItems]) => {
+      const vendorAmount = vendorItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const orderTotal = vendorAmount + deliveryCharge; // Include delivery charge in each vendor's order
+
+      // Update the cumulative totalAmount
+      totalAmount += orderTotal;
+
       const orderData = {
         userId,
-        items,
-        amount,
+        items: vendorItems,
+        amount: orderTotal, // Amount for this vendor order including delivery charge
         address,
+        deliveryCharge, // Track delivery charge for each vendor order if needed
         paymentMethod: 'COD',
         payment: false,
         date: Date.now(),
+        ceratedBy,  // Associate each order with the vendor's ID
       };
-  
-      // Save the new order
+
       const newOrder = new orderModel(orderData);
-      await newOrder.save();
-  
-      // Update the user's cartData (not cardData)
-      const data = await userModel.findByIdAndUpdate(
-        userId,
-        { cartData: {} }, // Corrected to cartData
-        { new: true }
-      );
-  
-      res.json({ success: true, message: "Order placed" });
-    } catch (error) {
-      console.log(error);
-      res.json({ success: false, message: error.message });
-    }
-  };
+      return newOrder.save();
+    });
+
+    // Wait for all orders to be saved
+    await Promise.all(orderPromises);
+
+    // Clear user's cartData after placing orders
+    await userModel.findByIdAndUpdate(userId, { cartData: {} }, { new: true });
+
+    // Respond with a success message and totalAmount for all orders
+    res.json({ success: true, message: "Orders placed successfully", totalAmount });
+  } catch (error) { 
+    console.error("Error placing order:", error); 
+    res.status(500).json({ success: false, message: "Failed to place orders" }); 
+  } 
+};
+
   
 
 //Placing order using stripe

@@ -2,12 +2,30 @@ import { assets } from "../assets/admin_assets/assets";
 import { useState, useEffect, useContext } from "react";
 import { Switch } from "@material-tailwind/react";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { backendUrl } from "../App";
 
 const Graph = () => {
-    const { currency ,role  } = useContext(AuthContext)
+    const { currency ,role, fetchList , list,token } = useContext(AuthContext)
     const [count, setCount] = useState(0);
     const targetValue = 200;  
     const duration = 1000;  
+
+    const updateStatus = async (_id, status) => {
+        try {
+          const response = await axios.post(`${backendUrl}/api/user/vendor-status`, { _id, status }, { headers: { token } });
+          if (response.data.success) {
+            toast.success("Status updated successfully!");
+            fetchList(); // Refresh the list after status update
+          } else {
+            toast.error(response.data.message);
+          }
+        } catch (error) {
+          console.error(error);
+          toast.error(error.message);
+        }
+      };
 
     useEffect(() => {
         let start = 0;
@@ -26,6 +44,10 @@ const Graph = () => {
 
         return () => clearInterval(timer);
     }, [targetValue]);
+    
+    useEffect(()=>{
+        role === "Admin" ?fetchList() : "";
+    },[])
 
     return (
         <div className="p-4 bg-gray-100 w-full">
@@ -123,16 +145,19 @@ const Graph = () => {
                             <p>Name</p>
                             <p>Status</p>
                         </div>
-                        {[...Array(10)].map((_, i) => (
+                        {list?.map((vendor, i) => (
                             <div key={i} className="flex justify-between items-center mt-1 p-1">
-                                <img className="rounded-full w-6 sm:w-10" src={assets.order_icon} alt="Admin Logo" />
-                                <p className="text-sm sm:text-xs md:text-lg">Vendor Name</p>
+                                <img className="rounded-full w-6 h-6 bg-center bg-cover sm:w-11 sm:h-11" src={vendor.image ? vendor.image : assets.profile_icon} alt="Admin Logo" />
+                                <p className="text-sm sm:text-xs md:text-lg">{vendor.name}</p>
                                 <Switch
-                                    ripple={false}
-                                    className="h-full w-full checked:bg-[#2ec946]"
-                                    containerProps={{ className: "w-11 h-6" }}
-                                    circleProps={{ className: "before:hidden left-0.5 border-none" }}
-                                />
+                id={`status-${i}`}
+                checked={vendor.status}
+                onChange={() => updateStatus(vendor._id, !vendor.status)}
+                ripple={false}
+                className="h-full w-full checked:bg-[#2ec946]"
+                containerProps={{ className: "w-11 h-6" }}
+                circleProps={{ className: "before:hidden left-0.5 border-none" }}
+              />
                             </div>
                         ))}
                     </div>
