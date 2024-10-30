@@ -55,8 +55,8 @@ import p_img51 from './p_img51.png'
 import p_img52 from './p_img52.png'
 
 
-import logo from './logo.jpeg'
-import hero_img from './hero_img.jpeg'
+import logo from './logo.png'
+import hero_img from './hero_img.png'
 import cart_icon from './cart_icon.png'
 import bin_icon from './bin_icon.png'
 import dropdown_icon from './dropdown_icon.png'
@@ -73,6 +73,9 @@ import contact_img from './contact_img.png'
 import razorpay_logo from './razorpay_logo.png'
 import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
+import banner_girl from './bannergirl.png'
+import banner_boy from './bannerboy.png'
+import banner_text from './bannertext.png'
 
 export const assets = {
     logo,
@@ -92,7 +95,10 @@ export const assets = {
     contact_img,
     razorpay_logo,
     stripe_logo,
-    cross_icon
+    cross_icon,
+    banner_girl,
+    banner_boy,
+    banner_text
 }
 
 export const products = [
