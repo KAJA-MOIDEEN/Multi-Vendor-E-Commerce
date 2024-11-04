@@ -4,7 +4,7 @@ import Title from '@/components/Title'
 import { ShopContext } from '@/context/ShopContext'
 import axios from 'axios'
 import React, { useContext, useState, useRef } from 'react'
-import { toast } from 'react-toastify'
+import toast from 'react-hot-toast'
 import { handler } from 'tailwindcss-animate'
 
 const PlaceOrder = () => {

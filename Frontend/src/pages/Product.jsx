@@ -6,10 +6,11 @@ import { useParams } from "react-router-dom";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency , addToCart} = useContext(ShopContext);
+  const { products, currency , addToCart, ifSize} = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  
 
   console.log(products);
   
@@ -29,7 +30,7 @@ const Product = () => {
   }, [productId, products]);
 
   return productData ? (
-    <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
+    <div className="border-t-2 pt-16 transition-opacity ease-in duration-500 opacity-100">
       {/* Product Data */}
       <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
         {/* Product Images */}
@@ -47,8 +48,8 @@ const Product = () => {
               />
             ))}
           </div>
-          <div className="w-full sm:w-[80%]">
-            <img className="w-full h-auto" src={image} alt="" />
+          <div className="w-full sm:w-[80%] image-container">
+          <img className="w-full h-auto" src={image} alt="" />
           </div>
         </div>
         {/* ---------- Product Info ---------- */}
@@ -84,6 +85,7 @@ const Product = () => {
                 </button>
               ))}
             </div>
+            {ifSize ? <p className="text-sm text-red-600 transform">Selecet product size</p> : ""}
             <div><b>Sold By:</b> {productData.sellerCompany}</div>
           </div>
           <button onClick={()=>addToCart(productData._id,size)} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">

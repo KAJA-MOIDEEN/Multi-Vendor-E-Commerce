@@ -1,6 +1,6 @@
 import { assets } from '@/assets/frontend_assets/assets'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Footer = () => {
     const navigate = useNavigate()
@@ -27,8 +27,8 @@ const Footer = () => {
                 <div>
                     <p className='text-xl font-medium mb-4'>GET IN TOUCH</p>
                     <ul className='flex flex-col gap-2 text-grey-600'>
-                        <li>+91 9876543210</li>
-                        <li>contact@vendor.com</li>
+                        <li><a href='tel:+91 9876543210'>+91 9876543210</a></li>
+                        <li><a href="mailto:contact@vendor.com">contact@vendor.com</a></li>
                     </ul>
                 </div>
             </div>

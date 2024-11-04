@@ -2,7 +2,8 @@ import React, { useContext, useRef } from 'react';
 import Title from '../components/Title';
 import { ShopContext } from '@/context/ShopContext';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
+
 
 const BecomeSeller = () => {
   const { token, backendUrl } = useContext(ShopContext); 

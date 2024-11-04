@@ -3,8 +3,8 @@ import Title from '../components/Title';
 import { assets } from '../assets/frontend_assets/assets.js';
 import { ShopContext } from '@/context/ShopContext';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const MyProfile = () => {
   const inputRef = useRef(null);  
@@ -126,7 +126,7 @@ const MyProfile = () => {
   }, [userProfile]);
 
   return (
-    <div className="flex flex-col sm:flex-row justify-center gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
+    <div className="flex flex-col sm:flex-row justify-center gap-4 pt-24 sm:pt-24 min-h-[80vh] border-t">
       <form onSubmit={handleSubmit} className="flex flex-col w-full sm:max-w-[480px] gap-4 mb-5">
         <div className="text-2xl">
           <Title text1="My" text2="Profile" />

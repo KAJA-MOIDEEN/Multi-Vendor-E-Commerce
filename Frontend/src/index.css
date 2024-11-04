@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&family=Stick+No+Bills:wght@200..800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -40,5 +41,21 @@ a.active hr{
   
   .no-arrows {
       -moz-appearance: textfield;
+  }
+  
+  /* ImageZoom.css */
+.image-container {
+    overflow: hidden; /* Prevents overflow */
+    position: relative; /* Needed for absolute positioning */
+  }
+  
+  .image-container img {
+    width: 100%; /* Full width of the container */
+    height: auto; /* Maintains aspect ratio */
+    transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+  }
+  
+  .image-container:hover img {
+    transform: scale(1.1); /* Zooms in on hover */
   }
   

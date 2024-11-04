@@ -12,14 +12,13 @@ import MyProfile from "./pages/MyProfile";
 import PlaceOrder from "./pages/PlaceOrder";
 import Product from "./pages/Product";
 import { Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from "react";
 import Aos from "aos";
 import 'aos/dist/aos.css';
 import ScrollToTop from './components/ScrollToTop';
 import BecomeSeller from "./pages/becomeSeller";
 import Verify from "./pages/Verify";
+import { Toaster } from "react-hot-toast";
 
 function App() {
     // Initialize AOS when the component mounts
@@ -33,11 +32,10 @@ function App() {
     
     
   return (
-    <>
+    <><Navbar />
+      <Toaster />
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-      <ToastContainer />
       <ScrollToTop/>
-        <Navbar />
         <SearchBar />
         <Routes>
           <Route path="/" element={<Home />} />

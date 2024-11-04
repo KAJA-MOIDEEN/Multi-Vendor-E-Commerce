@@ -1,7 +1,7 @@
 import { ShopContext } from '@/context/ShopContext';
 import axios from 'axios';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [currentState, setCurrentState] = useState('Login'); // Login, Sign Up, or Forgot Password
@@ -76,7 +76,7 @@ const Login = () => {
   return (
     <form
       onSubmit={currentState === 'Forgot Password' ? onForgotPasswordHandler : onSubmitHandler}
-      className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'
+      className='flex flex-col items-center w-[90%] sm:max-w-96 h-[26rem] m-auto gap-4 text-gray-800 pt-20'
     >
       <div className='inline-flex items-center gap-2 mb-2 mt-10'>
         <p className='prata-regular text-3xl'>{currentState}</p>

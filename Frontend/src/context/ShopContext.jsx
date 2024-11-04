@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 // import { products } from "@/assets/frontend_assets/assets";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -20,6 +20,7 @@ const ShopContextProvider = (props) => {
   const [orders, setOrders] = useState([])
   const [userProfile, setUserProfile] = useState([])
   const [role,setRole]=useState('')
+  const [ifSize,elseSize] = useState(false);
 
 
   const addToCart = async (itemId, size) => {
@@ -28,7 +29,10 @@ const ShopContextProvider = (props) => {
       return
     }
     if(!size){
-      toast.error("Selecet product size")
+      elseSize(true)
+      setTimeout(() => {
+        elseSize(false)  
+      }, 1000);
       return;
     }
 
@@ -206,7 +210,7 @@ console.log(token,"context")
     orders, setOrders,
     userProfile,
     setUserProfile,
-    role,setRole
+    role,setRole,ifSize
   };
 
   return (

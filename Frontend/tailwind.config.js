@@ -19,7 +19,11 @@ export default {
 			"secondary-200": "#161616",
 			"secondary-300": "#88543C",
 			"secondary-400": "#F2EDE9"
-		}
+		},
+		fontFamily: {
+        outfit: ['Outfit', 'sans-serif'],
+		stick: ['Stick No Bills', 'sans-serif'],
+      },
 	  },
 	},
 	plugins: [],
