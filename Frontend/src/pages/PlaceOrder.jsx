@@ -71,7 +71,7 @@ const PlaceOrder = () => {
 
             try {
 
-              const {data} = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, {headers: {token}})
+              const {data} = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, {headers: {Authorization:`${token}`}})
               if(data.success){
                 navigate('/orders')
                 setCartItems({})
@@ -94,7 +94,7 @@ const PlaceOrder = () => {
       switch (method) {
         // Api call for cod Method
         case 'cod':
-          const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { token } });
+          const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { Authorization:`${token}` } });
           console.log(response.data); 
           if (response.data.success) {
             toast.success(response.data.message)
@@ -105,7 +105,7 @@ const PlaceOrder = () => {
           }
           break;
         case 'stripe':
-          const responseStripe = await axios.post(backendUrl + '/api/order/stripe', orderData, {headers: {token}});
+          const responseStripe = await axios.post(backendUrl + '/api/order/stripe', orderData, {headers: {Authorization:`${token}`}});
           console.log(responseStripe.data);
           if(responseStripe.data.success){
             const {session_url} = responseStripe.data
@@ -117,7 +117,7 @@ const PlaceOrder = () => {
           break;
         case 'razorpay':
           
-          const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, {headers: {token}})
+          const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, {headers: {Authorization:`${token}`}})
           if(responseRazorpay.data.success){
             initPay(responseRazorpay.data.order);
             

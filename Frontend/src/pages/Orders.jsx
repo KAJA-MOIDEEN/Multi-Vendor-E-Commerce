@@ -11,7 +11,7 @@ const Orders = () => {
     if(!token){
       return 
     }
-    const response = await axios.post(`${backendUrl}/api/order/userorders`,{},{headers:{token}})
+    const response = await axios.get(`${backendUrl}/api/order/userorders`,{headers:{Authorization:`${token}`}})
     console.log(response.data.orders);
     
     if (response.data.success) {

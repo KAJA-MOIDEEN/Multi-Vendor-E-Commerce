@@ -18,6 +18,8 @@ const razorpayInstance = new razorpay({
 const placeOrder = async (req, res) => { 
   try { 
     const { userId, items, address , deliveryCharge } = req.body;
+    console.log("strip",userId);
+    
 
     if (!items || items.length === 0) {
       return res.status(400).json({ success: false, message: "No items to place an order" });

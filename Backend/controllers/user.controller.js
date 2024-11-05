@@ -144,11 +144,10 @@ const userUpdate = async (req, res) => {
 const getUserDetails = async(req,res)=>{
     
     const { userId } = req.body
-    console.log(userId,"id")
 
     try {
         const userData = await userModel.findById(userId);
-
+        
         if (userData) {
      
             const user = {

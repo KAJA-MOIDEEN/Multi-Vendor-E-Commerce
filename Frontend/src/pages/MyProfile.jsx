@@ -27,7 +27,7 @@ const MyProfile = () => {
   const getUserProfile = async (token) => {
     try {
       if (token) {
-        const response = await axios.get(`${backendUrl}/api/user/user-profile`, { headers: { token } });
+        const response = await axios.get(`${backendUrl}/api/user/user-profile`, { headers: {Authorization:`${token}`} });
         if (response.data.success) {
           setUserProfile(response.data.user);
       
@@ -77,7 +77,7 @@ const MyProfile = () => {
         formToSubmit.append('profileImage', profileImage);
       }
 
-      const response = await axios.put(`${backendUrl}/api/user/user-update`, formToSubmit, { headers: { token } });
+      const response = await axios.put(`${backendUrl}/api/user/user-update`, formToSubmit, { headers: { Authorization:`${token}` } });
 
       console.log('Profile updated successfully:', response.data);
       toast.success(response.data.message);

@@ -25,7 +25,7 @@ const BecomeSeller = () => {
         GST: gstRef.current.value
       };
 
-      const response = await axios.post(`${backendUrl}/api/user/seller-register`, data, {headers: {token}});
+      const response = await axios.post(`${backendUrl}/api/user/seller-register`, data, {headers: {Authorization:`${token}`}});
       toast.success(response.data.message);
 
       setTimeout(() => {

@@ -54,7 +54,7 @@ const ShopContextProvider = (props) => {
 
     if (token) {
       try {
-        const response = await axios.post(backendUrl + '/api/cart/add', {itemId, size}, {headers: {token}})
+        const response = await axios.post(backendUrl + '/api/cart/add', {itemId, size}, {headers: {Authorization:`${token}`}})
         if (response.data.success) {
           toast.success(response.data.message);  
         }
@@ -88,9 +88,9 @@ const ShopContextProvider = (props) => {
     
     if (token) {
       try {
-      const response = await axios.post(backendUrl+"/api/cart/update",{itemId,size,quantity},{headers:{token}});
+      const response = await axios.post(backendUrl+"/api/cart/update",{itemId,size,quantity},{headers:{Authorization:`${token}`}});
       if (response.data.success) {
-        toast.success(response.data.success);
+        toast.success(response.data.message);
       }
       } catch (error) {
         console.log(error);
@@ -135,7 +135,7 @@ const ShopContextProvider = (props) => {
   const getUserCart = async (token) => {
     try {
         if (token) {
-            const response = await axios.post(`${backendUrl}/api/cart/get`, {}, { headers: { token } });
+            const response = await axios.get(`${backendUrl}/api/cart/get`, { headers: { Authorization:`${token}` } });
             if (response.data.success) {
                 setCartItems(response.data.cartData);
             } else {
@@ -151,15 +151,15 @@ const ShopContextProvider = (props) => {
 const getUserProfile = async (token)=>{
   try {
     if(token){
-      const response = await axios.get(`${backendUrl}/api/user/user-profile`,{headers:{token}})
+      const response = await axios.get(`${backendUrl}/api/user/user-profile`,{headers:{Authorization:`${token}`}})
       
       if(response.data.success){
         setUserProfile(response.data.user)
       }
-     
-      
     }
   } catch (error) {
+    console.log(error);
+    toast.error(error.message)
     
   }
 }

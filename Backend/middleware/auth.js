@@ -2,14 +2,8 @@ import jwt from 'jsonwebtoken';
 
 const authUser = async (req, res, next) => {
   try {
-    let { token } = req.headers; // Use 'let' instead of 'const' to allow reassignment
+    const  token  = req.headers.authorization;
 
-    // Check if the token starts with 'token ' and remove it
-    if (token) {
-    //   token = token.split(' ')[1]; // Remove the 'token ' part
-    }
-
-    // console.log("after : token", token);
     if (!token) {
       return res.json({ success: false, message: 'Not Authorized Login Again' });
     }

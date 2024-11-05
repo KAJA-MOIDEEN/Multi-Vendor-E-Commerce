@@ -5,7 +5,7 @@ import { createToken } from "./user.controller.js";
 import { sendMailForRegistration } from "../middleware/mailSend.js";
 
 // Route for user signUp
-const adminSignup = async (req,res,next)=>{
+const adminSignup = async (req,res)=>{
     console.log(req.body); // Log the entire body
       try {
         
@@ -24,7 +24,7 @@ const adminSignup = async (req,res,next)=>{
             return res.json({
               success: false,
               message: "Vendor Already Exist",
-              waiting_MSG:"Please Wait For Admin verification",
+              waiting_MSG:"Please Wait For Admin Verification",
             })
             
           }
