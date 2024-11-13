@@ -8,8 +8,7 @@ import { assets } from "../assets/admin_assets/assets";
 import { AuthContext } from "../context/AuthContext";
 
 const Orders = () => {
-  const [orders, setOrders] = useState([]);
-  const {token,role} = useContext(AuthContext);
+  const {token,role,orders, setOrders} = useContext(AuthContext);
   const fetchAllOrders = async () => {
 
     if (!token) {

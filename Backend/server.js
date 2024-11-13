@@ -12,11 +12,6 @@ import vendorRouter from "./routes/vendor.router.js";
 // app config
 const app = express();
 const port = process.env.PORT || 4000 
-
-// Connect to MongoDB and Cloudinary
-connectDB();
-connectcloudinary()
-
  
 // middelwares
 app.use(express.urlencoded({ extended: true }));
@@ -36,6 +31,8 @@ app.get('/',(req,res)=>{
     res.send('<h1>API WORKING</h1>')
 });
 
+// Connect to MongoDB and Cloudinary
+connectDB();
+connectcloudinary()
 
 app.listen(port,()=>console.log(`Server Successfully Started on http://localhost:${port}`));
-connectDB();

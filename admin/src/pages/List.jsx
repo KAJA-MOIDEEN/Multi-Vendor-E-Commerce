@@ -35,8 +35,7 @@ const ConfirmModal = ({ isOpen, onConfirm, onCancel, message }) => {
 
 // Main List component
 const List = () => {
-  const { token, role } = useContext(AuthContext);
-  const [list, setList] = useState([]);
+  const { token, role, productList, SetProductList } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productIdToRemove, setProductIdToRemove] = useState(null);
 
@@ -47,7 +46,7 @@ const List = () => {
       const response = await axios.get(`${backendUrl}${url}`, { headers: { token } });
 
       if (response.data.success) {
-        setList(response.data.products);
+        SetProductList(response.data.products);
       } else {
         toast.error(response.data.message);
       }
@@ -101,7 +100,7 @@ const List = () => {
         </div>
 
         {/* Product List */}
-        {list.map((item, index) => (
+        {productList.map((item, index) => (
           <div
             key={index}
             className="grid grid-cols-[auto_1fr_auto] md:grid-cols-6 items-center gap-4 py-3 px-4 bg-white border border-gray-200 rounded-md shadow-sm text-sm"

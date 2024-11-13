@@ -29,11 +29,9 @@ function App() {
       });
     }, []);
 
-    
-    
   return (
     <><Navbar />
-      <Toaster />
+      <Toaster position="top-right" reverseOrder={true} />
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <ScrollToTop/>
         <SearchBar />
@@ -52,7 +50,6 @@ function App() {
           <Route path="/verify" element={<Verify/>}/>
         </Routes>
       </div>
-
       <Footer />
     </>
   );

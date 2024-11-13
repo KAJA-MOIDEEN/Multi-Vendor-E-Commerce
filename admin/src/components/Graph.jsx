@@ -5,12 +5,19 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { backendUrl } from "../App";
-
+var total = 0
 const Graph = () => {
-    const { currency ,role, fetchList , list,token } = useContext(AuthContext)
-    const [count, setCount] = useState(0);
-    const targetValue = 200;  
-    const duration = 1000;  
+    const { currency ,role, fetchList , list, token, orders, productList } = useContext(AuthContext);
+    const flattenedData = orders.flat();
+
+    console.log(flattenedData);
+    
+
+
+    
+    
+
+    const [total,setTotalSale] = useState() 
 
     const updateStatus = async (_id, status) => {
         try {
@@ -26,47 +33,45 @@ const Graph = () => {
           toast.error(error.message);
         }
       };
-
-    useEffect(() => {
-        let start = 0;
-        const incrementTime = 50;
-        const increment = targetValue / (duration / incrementTime);
-
-        const timer = setInterval(() => {
-            start += increment;
-            if (start >= targetValue) {
-                clearInterval(timer);
-                setCount(targetValue);
-            } else {
-                setCount(Math.ceil(start));
-            }
-        }, incrementTime);
-
-        return () => clearInterval(timer);
-    }, [targetValue]);
     
     useEffect(()=>{
         role === "Admin" ?fetchList() : "";
-    },[])
+        totalSale()
+    },[role])
 
+    const totalSale = ()=>{
+        let total = 0
+        orders?.forEach(order => {
+            total += order.amount
+        });
+        setTotalSale(total)
+    }
+    
     return (
         <div className="p-4 bg-gray-100 w-full">
             <div className="flex flex-col md:flex-row justify-between mb-16 space-y-4 md:space-y-0 md:space-x-4">
-                {["Total Sales", "Total Orders", "Total Vendors", "Total Products"].map((label, idx) => (
-                    <div
-                        key={label}
-                        className="flex justify-between items-center hover:scale-105 transform transition duration-300 ease-in-out border-2 border-black-600 rounded-lg p-4 bg-opacity-50 backdrop-blur-md shadow-lg w-full md:w-1/4"
-                    >
-                        <div>
-                            <p className="text-sm sm:text-xs md:text-lg">{label}</p>
-                            <p className="font-bold text-sm sm:text-xs md:text-lg">{currency}{count}</p>
-                        </div>
-                        <div>
-                            <img className="w-10 sm:w-12 md:w-16 h-6 sm:h-8 md:h-12" src={assets[`Graph_${idx + 1}`]} alt="" />
-                        </div>
-                    </div>
-                ))}
+    {(role === "Admin"
+        ? ["Total Sales", "Total Orders", "Total Vendors", "Total Products"]
+        : ["Total Sales", "Total Orders", "Total Products"]
+    ).map((label, idx) => (
+        <div
+            key={label}
+            className="flex justify-between items-center hover:scale-105 transform transition duration-300 ease-in-out border-2 border-black-600 rounded-lg p-4 bg-opacity-50 backdrop-blur-md shadow-lg w-full md:w-1/4"
+        >
+            <div>
+                <p className="text-sm sm:text-xs md:text-lg">{label}</p>
+                {idx === 0 ? <p className="font-bold text-sm sm:text-xs md:text-lg">{currency}{total}</p> : ""}
+                {idx === 1 ? <p className="font-bold text-sm sm:text-xs md:text-lg">{orders.length}</p> : ""}
+                {role === "Admin" && idx === 2 ? <p className="font-bold text-sm sm:text-xs md:text-lg">{list.length}</p> : ""}
+                {(role === "Admin" ? idx === 3 : idx === 2) ? <p className="font-bold text-sm sm:text-xs md:text-lg">{productList.length}</p> : ""}
             </div>
+            <div>
+                <img className="w-10 sm:w-12 md:w-16 h-6 sm:h-8 md:h-12" src={assets[`Graph_${idx + 1}`]} alt="" />
+            </div>
+        </div>
+    ))}
+</div>
+
 
             <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-4">
 
@@ -119,12 +124,12 @@ const Graph = () => {
                                 </tr>
                             </thead>
                             <tbody className="bg-white border-b-2">
-                                {Array.from({ length: 10 }).map((_, index) => (
-                                    <tr key={index} className="border-b-2">
-                                        <td className="p-2 text-sm sm:text-sm">Cotton Shirt</td>
-                                        <td className="p-2 text-sm sm:text-sm">230</td>
-                                    </tr>
-                                ))}
+                                {/* {data.map((data) => ( */}
+                                    {/* <tr key={data._id} className="border-b-2"> */}
+                                        {/* <td className="p-2 text-sm sm:text-sm">{data.sellerCompany}</td> */}
+                                        {/* <td className="p-2 text-sm sm:text-sm">230</td> */}
+                                    {/* </tr> */}
+                                {/* ))} */}
                             </tbody>
                         </table>
                     </div>

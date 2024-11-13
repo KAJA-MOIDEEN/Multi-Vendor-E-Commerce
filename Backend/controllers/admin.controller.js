@@ -114,4 +114,13 @@ const adminLogin = async (req, res) => {
     }
   };
 
-  export {adminSignup, adminLogin}
+  const adminDashboard = ()=>{
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
+
+  export {adminSignup, adminLogin ,adminDashboard}

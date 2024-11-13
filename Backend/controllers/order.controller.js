@@ -144,7 +144,9 @@ const placeOrderStripe = async (req, res) => {
     });
 
     // Wait for all vendor orders to be saved
-    await Promise.all(orderPromises); 
+   const newOrder =  await Promise.all(orderPromises); 
+  //  console.log(newOrder);
+   
 
     // Create a single Stripe checkout session
     const session = await stripe.checkout.sessions.create({
@@ -170,13 +172,16 @@ const placeOrderStripe = async (req, res) => {
 // Verify Stripe Payment
 const verifyStripe = async (req, res) => {
   const { success, userId } = req.body; // We no longer need orderId here
+console.log("UserID++",userId);
 
   try {
     if (success === "true") {
       // Find all orders that belong to the user and mark them as paid
       const orders = await orderModel.find({ userId, payment: false });
-
+      console.log("orders+++++++++",orders);
+      
       for (const order of orders) {
+        console.log("------",order);
         await orderModel.findByIdAndUpdate(order._id, { payment: true });
       }
       

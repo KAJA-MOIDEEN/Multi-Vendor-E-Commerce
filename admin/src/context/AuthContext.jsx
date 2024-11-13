@@ -13,8 +13,8 @@ export const  AuthProvider = ({children})=>{
     const navigate = useNavigate();
     const currency = "₹ ";
     const [list, setList] = useState([]);
-
-    console.log(list);
+    const [orders, setOrders] = useState([]);
+    const [productList, SetProductList] = useState([]);
     
     // fetching all vendors list  
     const fetchList = async () => {
@@ -36,7 +36,9 @@ export const  AuthProvider = ({children})=>{
         token, setToken,
         navigate, currency,
         fetchList,
-        list, setList
+        list, setList,
+        orders, setOrders,
+        productList, SetProductList
     }
 
     useEffect(()=>{

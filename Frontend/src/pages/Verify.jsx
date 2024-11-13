@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 
 const Verify = ()=>{
     const {navigate,token,setCartItems,backendUrl} = useContext(ShopContext)
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     
     const success = searchParams.get('success')
     const orderId = searchParams.get('orderId')
@@ -16,7 +16,7 @@ const Verify = ()=>{
             if (!token) {
                 return null
             }
-            const response = await axios.post(backendUrl + '/api/order/verifyStripe',{success,orderId},{headers:{Authorization:`${token}`}})
+            const response = await axios.post(backendUrl + '/api/order/verifyStripe',{success},{headers:{Authorization:`${token}`}})
             console.log(response.data);
             
             if (response.data.success) {
